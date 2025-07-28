@@ -1,2 +1,5 @@
-
-lihbo
+{
+  "versao": "2.1.0",
+  "linkDownload": "https://raw.githubusercontent.com/inter-estudios-developers/facilita-estudante/main/v2.1.0/facilita-estudante.html",
+  "mensagem": "Atualização com correções de login, melhoria na aba Conta e sistema de sincronização aprimorado."
+}
