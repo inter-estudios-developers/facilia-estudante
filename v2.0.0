@@ -1,1 +1,3098 @@
-facilita-estudante.html
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Facilita Estudante</title>
+    <!-- Google Fonts for Inter (modern, clean font) -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Font Awesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        /* CSS Variables for themes and colors */
+        :root {
+            --primary-color: #6366F1; /* A vibrant, modern indigo */
+            --primary-light: #818CF8;
+            --primary-dark: #4F46E5;
+            --background-color: #F9FAFB; /* Lighter background */
+            --card-background: #FFFFFF;
+            --text-color: #1F2937; /* Darker text for contrast */
+            --input-border: #D1D5DB;
+            --button-primary-bg: var(--primary-color);
+            --button-primary-text: #FFFFFF;
+            --tab-icon-color: #6B7280;
+            --tab-icon-active-color: var(--primary-color);
+            --border-radius-base: 12px; /* Slightly more rounded */
+            --border-radius-lg: 18px;
+            --padding-base: 16px;
+            --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.08), 0 1px 2px rgba(0, 0, 0, 0.04);
+            --shadow-md: 0 4px 8px rgba(0, 0, 0, 0.1), 0 2px 4px rgba(0, 0, 0, 0.06);
+            --shadow-lg: 0 10px 15px rgba(0, 0, 0, 0.15), 0 4px 6px rgba(0, 0, 0, 0.08);
+            --secondary-text-color: #6B7280;
+
+            /* Colors for task status */
+            --task-completed-color: #10B981; /* Emerald green */
+            --task-uncompleted-color: #EF4444; /* Red */
+            --task-pending-color: #F59E0B; /* Amber */
+
+            /* New variables for login and buttons */
+            --login-card-bg: linear-gradient(135deg, var(--primary-dark), var(--primary-color));
+            --login-text-color: #FFFFFF;
+            --button-email-bg: #3B82F6; /* Blue-500 */
+            --button-email-hover: #2563EB; /* Blue-600 */
+            --button-register-bg: #10B981; /* Emerald-500 */
+            --button-register-hover: #059669; /* Emerald-600 */
+            --button-logout-bg: #6B7280; /* Gray-500 */
+            --button-logout-hover: #4B5563; /* Gray-600 */
+            --button-forgot-password: #FFFFFF;
+            --button-forgot-password-hover: #E5E7EB;
+        }
+
+        /* Dark Mode */
+        body.dark-mode {
+            --background-color: #1F2937; /* Darker background */
+            --card-background: #374151; /* Darker card */
+            --text-color: #F3F4F6; /* Lighter text */
+            --input-border: #4B5563;
+            --secondary-text-color: #9CA3AF;
+            --tab-icon-color: #9CA3AF;
+            --login-card-bg: linear-gradient(135deg, #3730A3, #4338CA); /* Darker gradient */
+            --login-text-color: #F3F4F6;
+            --button-email-bg: #2563EB;
+            --button-register-bg: #059669;
+            --button-logout-bg: #4B5563;
+            --button-forgot-password: #D1D5DB;
+            --button-forgot-password-hover: #9CA3AF;
+        }
+
+        /* Highlight Colors (variables for JS use) */
+        /* Removed specific color classes as only one primary color is kept */
+
+
+        /* Fonts (variables for JS use) */
+        body.font-inter { font-family: 'Inter', sans-serif; }
+        body.font-montserrat { font-family: 'Montserrat', sans-serif; }
+        body.font-roboto { font-family: 'Roboto', sans-serif; }
+        body.font-open-sans { font-family: 'Open Sans', sans-serif; }
+
+        /* Font Size (variables for JS use) */
+        body.font-small { font-size: 0.9em; }
+        body.font-large { font-size: 1.1em; }
+
+        /* Global body styles */
+        body {
+            margin: 0;
+            padding: 0;
+            background-color: var(--background-color);
+            color: var(--text-color);
+            font-family: 'Inter', sans-serif; /* Default font */
+            display: flex;
+            justify-content: center;
+            min-height: 100vh;
+            overflow-x: hidden; /* Prevents horizontal scroll */
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+            transition: background-color 0.3s ease, color 0.3s ease, font-size 0.3s ease;
+        }
+
+        /* Main application container */
+        #app-container {
+            width: 100%;
+            max-width: 480px; /* Slightly wider for better content display */
+            background-color: var(--background-color);
+            box-shadow: var(--shadow-lg); /* Stronger shadow for the main container */
+            display: flex;
+            flex-direction: column;
+            position: relative;
+            overflow: hidden;
+            border-radius: var(--border-radius-lg); /* Rounded corners for the app container */
+        }
+
+        /* Application header */
+        header {
+            background-color: var(--primary-color);
+            color: var(--button-primary-text);
+            padding: var(--padding-base) 24px; /* More padding */
+            text-align: center;
+            border-bottom-left-radius: var(--border-radius-lg);
+            border-bottom-right-radius: var(--border-radius-lg);
+            font-size: 1.8em; /* Larger title */
+            font-weight: 700;
+            box-shadow: var(--shadow-md);
+            position: relative;
+            z-index: 10;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+        header i {
+            font-size: 0.8em; /* Icon size relative to text */
+        }
+
+        /* Main content area */
+        main {
+            flex-grow: 1;
+            padding: var(--padding-base);
+            overflow-y: auto; /* Allows scrolling in main content */
+        }
+
+        /* Application sections */
+        section {
+            display: none; /* All sections hidden by default */
+            animation: fadeIn 0.4s ease-out forwards; /* Slightly slower fade in */
+        }
+
+        section.active {
+            display: block; /* Only active section is displayed */
+        }
+
+        /* Fade-in animation for sections */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(15px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Cards/Forms */
+        .card {
+            background-color: var(--card-background);
+            border-radius: var(--border-radius-base);
+            padding: var(--padding-base) 20px; /* More padding */
+            margin-bottom: var(--padding-base);
+            box-shadow: var(--shadow-sm); /* Softer shadow for cards */
+            transition: background-color 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .card h2, .card h3 {
+            color: var(--primary-color);
+            margin-top: 0;
+            margin-bottom: 18px; /* More space below titles */
+            font-size: 1.3em;
+            font-weight: 600;
+            text-align: center;
+        }
+
+        .form-group {
+            margin-bottom: 18px; /* More space between form groups */
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px; /* More space below labels */
+            font-weight: 600;
+            color: var(--text-color);
+        }
+
+        .form-group input[type="text"],
+        .form-group input[type="date"],
+        .form-group input[type="time"],
+        .form-group input[type="email"],
+        .form-group input[type="password"],
+        .form-group textarea,
+        .form-group select {
+            width: calc(100% - 24px); /* Adjust for padding */
+            padding: 12px; /* More padding */
+            border: 1px solid var(--input-border);
+            border-radius: 8px;
+            background-color: var(--background-color);
+            color: var(--text-color);
+            transition: border-color 0.3s ease, background-color 0.3s ease, box-shadow 0.3s ease;
+            font-size: 1em;
+        }
+        .form-group input:focus,
+        .form-group textarea:focus,
+        .form-group select:focus {
+            outline: none;
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 3px rgba(var(--primary-color-rgb, 99, 102, 241), 0.25); /* Focus ring */
+        }
+
+        textarea {
+            resize: vertical;
+            min-height: 90px; /* Slightly taller textarea */
+        }
+
+        /* Primary buttons */
+        .button {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            width: 100%;
+            padding: 14px; /* More padding for buttons */
+            background-color: var(--button-primary-bg);
+            color: var(--button-primary-text);
+            border: none;
+            border-radius: var(--border-radius-base);
+            font-size: 1.1em;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background-color 0.3s ease, transform 0.1s ease, box-shadow 0.3s ease;
+            text-align: center;
+            box-shadow: var(--shadow-md); /* Consistent shadow */
+            letter-spacing: 0.5px; /* Slightly more spaced letters */
+        }
+
+        .button:hover {
+            background-color: var(--primary-dark); /* Darker on hover */
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-lg); /* More pronounced shadow on hover */
+        }
+
+        .button:active {
+            transform: translateY(1px);
+            box-shadow: var(--shadow-sm);
+        }
+        
+        /* Link-style button */
+        .button.link-style {
+            background: none;
+            color: var(--primary-color);
+            text-decoration: none; /* No underline by default */
+            font-size: 0.95em;
+            padding: 8px;
+            margin-top: 10px;
+            width: auto;
+            align-self: center;
+            box-shadow: none;
+            font-weight: 500;
+        }
+        .button.link-style:hover {
+            color: var(--primary-dark);
+            text-decoration: underline; /* Underline on hover */
+            transform: none;
+            box-shadow: none;
+        }
+
+
+        /* Task list */
+        .task-list {
+            list-style: none;
+            padding: 0;
+            margin-top: 20px;
+        }
+
+        .task-item {
+            background-color: var(--card-background);
+            border-radius: 10px; /* Slightly more rounded tasks */
+            padding: 15px;
+            margin-bottom: 12px; /* More space between tasks */
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: var(--shadow-sm);
+            transition: background-color 0.3s ease, transform 0.2s ease, border-left-color 0.3s ease;
+            border-left: 6px solid transparent; /* Thicker border for status */
+        }
+        .task-item:hover {
+            transform: translateY(-3px); /* Lift effect on hover */
+            box-shadow: var(--shadow-md);
+        }
+
+        /* Task item border colors based on status */
+        .task-item.status-completed {
+            border-left-color: var(--task-completed-color);
+            opacity: 0.8;
+        }
+        .task-item.status-uncompleted {
+            border-left-color: var(--task-uncompleted-color);
+        }
+        .task-item.status-pending {
+            border-left-color: var(--task-pending-color);
+        }
+        
+        .task-item.status-completed .task-title {
+            text-decoration: line-through;
+            color: var(--secondary-text-color);
+        }
+
+        .task-item div {
+            flex-grow: 1;
+        }
+
+        .task-item h4 {
+            margin: 0;
+            font-size: 1.15em; /* Slightly larger title */
+            color: var(--text-color);
+            font-weight: 600;
+        }
+        .task-item h4.task-title {
+            color: var(--text-color);
+        }
+
+
+        .task-item p {
+            margin: 5px 0 0;
+            font-size: 0.9em;
+            color: var(--secondary-text-color);
+        }
+
+        .task-actions {
+            display: flex;
+            gap: 8px; /* Tighter gap for actions */
+            flex-shrink: 0; /* Prevent actions from shrinking */
+        }
+
+        .task-actions button {
+            background: none;
+            border: none;
+            cursor: pointer;
+            font-size: 1.3em; /* Slightly larger icons */
+            color: var(--tab-icon-color); /* Neutral color for actions */
+            transition: color 0.2s ease, transform 0.1s ease;
+            padding: 5px; /* Add padding for easier tapping */
+            border-radius: 5px;
+        }
+
+        .task-actions button:hover {
+            color: var(--primary-color); /* Primary color on hover */
+            transform: scale(1.1);
+        }
+        
+        /* Task status buttons styles */
+        .task-actions .status-button {
+            font-size: 1.5em; /* Larger status icon */
+            padding: 0 5px;
+        }
+        .task-actions .status-button.status-completed-btn { color: var(--task-completed-color); }
+        .task-actions .status-button.status-uncompleted-btn { color: var(--task-uncompleted-color); }
+        .task-actions .status-button.status-pending-btn { color: var(--task-pending-color); }
+
+
+        /* Calendar */
+        .calendar-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            font-size: 1.3em;
+            font-weight: 600;
+            color: var(--text-color);
+            padding: 0 10px;
+        }
+
+        .calendar-header button {
+            background: none;
+            border: none;
+            font-size: 1.6em;
+            color: var(--primary-color);
+            cursor: pointer;
+            transition: color 0.2s ease, transform 0.1s ease;
+            padding: 8px; /* Make button more tappable */
+            border-radius: 50%;
+        }
+        .calendar-header button:hover {
+            color: var(--primary-dark);
+            transform: scale(1.1);
+            background-color: rgba(var(--primary-color-rgb, 99, 102, 241), 0.1);
+        }
+
+        .calendar-grid {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            gap: 6px; /* Slightly larger gap */
+            text-align: center;
+        }
+
+        .calendar-grid .day-name {
+            font-weight: 600;
+            color: var(--secondary-text-color);
+            padding-bottom: 10px;
+            font-size: 0.9em;
+        }
+
+        .calendar-grid .day {
+            padding: 12px 5px; /* More padding */
+            border-radius: 10px; /* Rounded corners */
+            background-color: var(--card-background);
+            cursor: pointer;
+            transition: background-color 0.2s ease, transform 0.1s ease, border-color 0.2s ease, color 0.2s ease;
+            min-height: 50px; /* Ensures minimum size */
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            font-size: 1em;
+            position: relative;
+            border: 2px solid transparent;
+            box-shadow: var(--shadow-sm);
+        }
+
+        .calendar-grid .day.empty {
+            background-color: transparent;
+            cursor: default;
+            box-shadow: none;
+        }
+
+        .calendar-grid .day:not(.empty):hover {
+            background-color: var(--primary-color);
+            color: var(--button-primary-text);
+            transform: translateY(-3px);
+            box-shadow: var(--shadow-md);
+        }
+
+        .calendar-grid .day.current-day {
+            background-color: var(--primary-color);
+            color: var(--button-primary-text);
+            font-weight: 700;
+            border-color: var(--primary-dark); /* Darker border for current day */
+        }
+        .calendar-grid .day.current-day:hover {
+            background-color: var(--primary-dark);
+        }
+
+        /* Calendar day border colors based on task status */
+        .calendar-grid .day.has-completed-tasks {
+            border-color: var(--task-completed-color);
+        }
+        .calendar-grid .day.has-uncompleted-tasks {
+            border-color: var(--task-uncompleted-color);
+        }
+        .calendar-grid .day.has-pending-tasks {
+            border-color: var(--task-pending-color);
+        }
+        /* Priority in border color if there's more than one task type */
+        .calendar-grid .day.has-uncompleted-tasks.has-completed-tasks {
+            border-color: var(--task-uncompleted-color);
+        }
+        .calendar-grid .day.has-pending-tasks.has-uncompleted-tasks {
+            border-color: var(--task-pending-color);
+        }
+
+
+        .calendar-grid .day .holiday-name {
+            font-size: 0.7em;
+            position: absolute;
+            bottom: 3px;
+            left: 0;
+            right: 0;
+            text-align: center;
+            background-color: rgba(0, 0, 0, 0.15); /* Slightly darker for contrast */
+            border-radius: 3px;
+            padding: 2px 0;
+            margin: 0 5px;
+            color: var(--button-primary-text);
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        #calendar-tasks-view {
+            margin-top: 25px;
+        }
+
+        #calendar-tasks-view h3 {
+            margin-bottom: 15px;
+            font-size: 1.25em;
+        }
+
+        /* Settings and Account/Cloud */
+        .settings-option {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px 0; /* More padding */
+            border-bottom: 1px solid var(--input-border);
+        }
+
+        .settings-option:last-child {
+            border-bottom: none;
+        }
+
+        .settings-option label {
+            font-weight: 500;
+            color: var(--text-color);
+        }
+
+        /* Toggle Switch */
+        .switch {
+            position: relative;
+            display: inline-block;
+            width: 50px; /* Wider switch */
+            height: 28px; /* Taller switch */
+        }
+
+        .switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+
+        .slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: #CCC;
+            -webkit-transition: .4s;
+            transition: .4s;
+            border-radius: 28px; /* Fully rounded */
+        }
+
+        .slider:before {
+            position: absolute;
+            content: "";
+            height: 20px; /* Smaller circle */
+            width: 20px; /* Smaller circle */
+            left: 4px; /* Adjust position */
+            bottom: 4px; /* Adjust position */
+            background-color: white;
+            -webkit-transition: .4s;
+            transition: .4s;
+            border-radius: 50%;
+        }
+
+        input:checked + .slider {
+            background-color: var(--primary-color);
+        }
+
+        input:focus + .slider {
+            box-shadow: 0 0 1px var(--primary-color);
+        }
+
+        input:checked + .slider:before {
+            -webkit-transform: translateX(22px); /* Adjust translation */
+            -ms-transform: translateX(22px);
+            transform: translateX(22px);
+        }
+
+        .color-options, .font-options, .size-options, .priority-options, .reminder-options, .calendar-start-options, .export-options, .sort-by-options, .sort-order-options, .language-options { /* Added .language-options */
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px; /* More space */
+            margin-top: 15px;
+            justify-content: center; /* Center options */
+        }
+
+        .color-box {
+            width: 45px; /* Larger color box */
+            height: 45px; /* Larger color box */
+            border-radius: 50%;
+            cursor: pointer;
+            border: 3px solid transparent; /* Thicker border */
+            transition: border-color 0.2s ease, transform 0.1s ease;
+            box-shadow: var(--shadow-sm);
+        }
+
+        .color-box.selected, .color-box:hover {
+            border-color: var(--primary-color);
+            transform: translateY(-2px);
+        }
+        .color-box.selected {
+            box-shadow: 0 0 0 3px rgba(var(--primary-color-rgb, 99, 102, 241), 0.4); /* Stronger selection ring */
+        }
+
+        .option-button {
+            background-color: var(--card-background);
+            border: 1px solid var(--input-border);
+            padding: 10px 18px; /* More padding */
+            border-radius: 10px; /* More rounded */
+            cursor: pointer;
+            transition: background-color 0.2s ease, border-color 0.2s ease, color 0.2s ease, transform 0.1s ease, box-shadow 0.2s ease;
+            color: var(--text-color);
+            font-weight: 500;
+            box-shadow: var(--shadow-sm);
+        }
+
+        .option-button.selected, .option-button:hover {
+            background-color: var(--primary-color);
+            border-color: var(--primary-color);
+            color: var(--button-primary-text);
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-md);
+        }
+        .option-button.selected {
+            font-weight: 600;
+        }
+
+        /* Navigation Footer */
+        footer.nav-bar {
+            background-color: var(--card-background);
+            width: 100%;
+            padding: 12px 0; /* More vertical padding */
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            /* Removed margin-top to make it stick to the bottom of the container */
+            position: sticky; /* Sticky to bottom */
+            bottom: 0;
+            box-shadow: var(--shadow-md); /* Shadow to make it pop */
+            border-top-left-radius: var(--border-radius-lg); /* Rounded top corners */
+            border-top-right-radius: var(--border-radius-lg);
+            transition: background-color 0.3s ease;
+            z-index: 10; /* Ensure it's above content */
+        }
+
+        .nav-item {
+            background: none;
+            border: none;
+            color: var(--tab-icon-color);
+            cursor: pointer;
+            font-size: 2em; /* Larger icons */
+            padding: 10px 15px; /* More padding for tap area */
+            transition: color 0.2s ease, transform 0.1s ease;
+            border-radius: 8px; /* Rounded background on hover/active */
+        }
+
+        .nav-item.active {
+            color: var(--tab-icon-active-color);
+            transform: translateY(-5px); /* More pronounced lift */
+            background-color: rgba(var(--primary-color-rgb, 99, 102, 241), 0.1); /* Light background for active */
+        }
+        .nav-item:hover:not(.active) {
+            color: var(--primary-light); /* Lighter primary on hover */
+            background-color: rgba(var(--primary-color-rgb, 99, 102, 241), 0.05);
+        }
+
+        /* Action Buttons */
+        .action-button-danger {
+            background-color: #EF4444; /* Red */
+            color: white;
+            margin-top: 15px;
+        }
+        .action-button-danger:hover { background-color: #DC2626; }
+
+        .action-button-success {
+            background-color: #10B981; /* Green */
+            color: white;
+            margin-top: 15px;
+        }
+        .action-button-success:hover { background-color: #059669; }
+
+        .action-button-info {
+            background-color: #3B82F6; /* Blue */
+            color: white;
+            margin-top: 15px;
+        }
+        .action-button-info:hover { background-color: #2563EB; }
+
+        /* Specific styles for Account and Cloud section */
+        #cloud-sync-section .card {
+            background: var(--login-card-bg);
+            color: var(--login-text-color);
+            text-align: center;
+            padding: 35px 25px; /* More padding for a grander look */
+            box-shadow: var(--shadow-lg); /* Stronger shadow */
+            border-radius: var(--border-radius-lg);
+        }
+        #cloud-sync-section .card h2,
+        #cloud-sync-section .card h3 {
+            color: var(--login-text-color);
+            margin-bottom: 25px;
+            font-size: 1.5em;
+        }
+
+        .account-status {
+            text-align: center;
+            margin-bottom: 25px;
+            font-size: 1.1em;
+            color: var(--login-text-color);
+        }
+        .account-status .status-text {
+            font-weight: 600;
+            color: var(--login-text-color);
+        }
+        .account-status .status-text.logged-out {
+            color: #FCD34D; /* Amber for "Not Logged In" */
+        }
+
+        .login-buttons {
+            display: flex;
+            flex-direction: column;
+            gap: 18px; /* Increased space between buttons */
+            margin-top: 30px;
+        }
+
+        .login-buttons .button {
+            color: var(--button-primary-text);
+        }
+
+        /* Specific colors for login buttons */
+        .login-buttons .button.email {
+            background-color: var(--button-email-bg);
+        }
+        .login-buttons .button.email:hover {
+            background-color: var(--button-email-hover);
+        }
+        .login-buttons .button.register {
+            background-color: var(--button-register-bg);
+        }
+        .login-buttons .button.register:hover {
+            background-color: var(--button-register-hover);
+        }
+        .login-buttons .button.logout {
+            background-color: var(--button-logout-bg);
+        }
+        .login-buttons .button.logout:hover {
+            background-color: var(--button-logout-hover);
+        }
+
+        /* Style for inputs within the login card */
+        #cloud-sync-section .form-group input[type="email"],
+        #cloud-sync-section .form-group input[type="password"] {
+            background-color: rgba(255, 255, 255, 0.15); /* Semi-transparent background */
+            border: 1px solid rgba(255, 255, 255, 0.4); /* Softer border */
+            color: var(--login-text-color);
+            padding: 14px 18px; /* More padding */
+            border-radius: 12px; /* More rounded corners */
+            font-size: 1.05em;
+        }
+        #cloud-sync-section .form-group input[type="email"]::placeholder,
+        #cloud-sync-section .form-group input[type="password"]::placeholder {
+            color: rgba(255, 255, 255, 0.8);
+        }
+        #cloud-sync-section .form-group input[type="email"]:focus,
+        #cloud-sync-section .form-group input[type="password"]:focus {
+            outline: none;
+            border-color: var(--login-text-color);
+            box-shadow: 0 0 0 4px rgba(255, 255, 255, 0.3); /* Focus shadow */
+        }
+        #cloud-sync-section .form-group label {
+            color: var(--login-text-color);
+            text-align: left;
+            width: 100%;
+        }
+
+        /* Divider line within login section */
+        #cloud-sync-section hr {
+            border-top: 1px dashed rgba(255, 255, 255, 0.4);
+            margin: 35px 0;
+        }
+
+        /* Forgot password - improved button */
+        #forgot-password-button {
+            color: var(--button-forgot-password);
+            font-weight: 500;
+            font-size: 1em;
+            text-decoration: none;
+            transition: color 0.2s ease;
+        }
+        #forgot-password-button:hover {
+            color: var(--button-forgot-password-hover);
+        }
+
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 18px; /* More space */
+            margin-top: 25px;
+            margin-bottom: 25px;
+            text-align: center;
+        }
+
+        .stat-item {
+            background-color: var(--background-color);
+            padding: 20px; /* More padding */
+            border-radius: 10px;
+            box-shadow: var(--shadow-sm);
+            color: var(--text-color);
+            transition: background-color 0.3s ease;
+        }
+
+        .stat-item .value {
+            font-size: 2em; /* Larger value */
+            font-weight: 700;
+            color: var(--primary-color);
+            margin-bottom: 8px;
+        }
+
+        .stat-item .label {
+            font-size: 0.95em;
+            color: var(--secondary-text-color);
+        }
+
+        /* Custom Modal styles */
+        .custom-modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(0,0,0,0.5); /* Darker overlay */
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .custom-modal-content {
+            background-color: var(--card-background);
+            margin: auto;
+            padding: 25px; /* More padding */
+            border: 1px solid #888;
+            border-radius: var(--border-radius-base);
+            width: 90%; /* Wider modal on small screens */
+            max-width: 450px;
+            box-shadow: var(--shadow-lg);
+            text-align: center;
+            position: relative;
+            animation: fadeIn 0.3s ease-out forwards;
+        }
+
+        .custom-modal-content h3 {
+            color: var(--primary-color);
+            margin-top: 0;
+            margin-bottom: 18px;
+            font-size: 1.3em;
+        }
+
+        .custom-modal-content p {
+            margin-bottom: 22px;
+            color: var(--text-color);
+            text-align: left;
+            line-height: 1.6; /* More readable line height */
+        }
+
+        .custom-modal-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 12px; /* More space */
+        }
+
+        .custom-modal-buttons button {
+            padding: 12px 25px; /* More padding */
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: background-color 0.2s ease, transform 0.1s ease;
+        }
+
+        .custom-modal-buttons .confirm-button {
+            background-color: var(--primary-color);
+            color: var(--button-primary-text);
+        }
+        .custom-modal-buttons .confirm-button:hover { background-color: var(--primary-dark); transform: translateY(-1px); }
+
+        .custom-modal-buttons .cancel-button {
+            background-color: #D1D5DB; /* Lighter gray */
+            color: var(--text-color);
+        }
+        .custom-modal-buttons .cancel-button:hover { background-color: #9CA3AF; transform: translateY(-1px); }
+
+        /* Cloud status indicator styles (kept for consistency if re-introduced) */
+        .sync-status-green { color: var(--task-completed-color); font-weight: 600; }
+        .sync-status-red { color: var(--task-uncompleted-color); font-weight: 600; }
+        .sync-status-white { color: var(--secondary-text-color); font-weight: 600; }
+
+        /* Estilos para a Tela de Carregamento */
+        #loading-screen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: var(--background-color); /* Usa a cor de fundo do app */
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999; /* Garante que fique por cima de tudo */
+            transition: opacity 0.5s ease-out, visibility 0.5s ease-out; /* Adicionado visibility para transição suave */
+        }
+
+        #loading-screen.hidden {
+            opacity: 0;
+            visibility: hidden; /* Esconde o elemento completamente após a transição */
+        }
+
+        .loader {
+            border: 8px solid #f3f3f3; /* Light grey */
+            border-top: 8px solid var(--primary-color); /* Primary color */
+            border-radius: 50%;
+            width: 60px;
+            height: 60px;
+            animation: spin 1.5s linear infinite;
+            margin-bottom: 20px;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        #loading-screen p {
+            color: var(--text-color);
+            font-size: 1.2em;
+        }
+
+        /* Online/Offline Indicator */
+        #online-status-indicator {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            padding: 5px 10px;
+            border-radius: 20px;
+            font-size: 0.8em;
+            font-weight: 600;
+            color: white;
+            z-index: 100; /* Above other elements but below loading screen */
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            box-shadow: var(--shadow-sm);
+        }
+
+        #online-status-indicator.online {
+            background-color: #10B981; /* Green */
+        }
+
+        #online-status-indicator.offline {
+            background-color: #EF4444; /* Red */
+        }
+
+        #online-status-indicator i {
+            font-size: 1em;
+        }
+    </style>
+</head>
+<body class="font-inter">
+    <!-- Loading Screen -->
+    <div id="loading-screen">
+        <div class="loader"></div>
+        <p>Carregando Facilita Estudante...</p>
+    </div>
+
+    <div id="app-container">
+        <header>
+            <i class="fas fa-graduation-cap"></i> Facilita Estudante
+            <!-- Online/Offline Indicator -->
+            <div id="online-status-indicator" class="offline">
+                <i class="fas fa-circle"></i> <span id="status-text">Offline</span>
+            </div>
+        </header>
+
+        <main>
+            <!-- Task Section -->
+            <section id="tasks-section" class="active">
+                <div class="card">
+                    <h2>Adicionar Nova Tarefa</h2>
+                    <div class="form-group">
+                        <label for="task-title">Título da Tarefa:</label>
+                        <input type="text" id="task-title" placeholder="Ex: Estudar Cálculo">
+                    </div>
+                    <div class="form-group">
+                        <label for="task-description">Descrição (Opcional):</label>
+                        <textarea id="task-description" placeholder="Detalhes da tarefa..."></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label for="task-date">Data:</label>
+                        <input type="date" id="task-date">
+                    </div>
+                    <div class="form-group">
+                        <label for="task-time">Hora:</label>
+                        <input type="time" id="task-time">
+                    </div>
+                    <button class="button" id="add-task-button">Adicionar Tarefa</button>
+                </div>
+
+                <div class="card">
+                    <h3>Minhas Tarefas</h3>
+                    <ul id="task-list" class="task-list">
+                        <p id="no-tasks-message" style="text-align: center; color: var(--secondary-text-color);">Nenhuma tarefa cadastrada. Adicione uma nova!</p>
+                    </ul>
+                </div>
+            </section>
+
+            <!-- Calendar Section -->
+            <section id="calendar-section">
+                <div class="card">
+                    <div class="calendar-header">
+                        <button id="prev-month"><i class="fas fa-chevron-left"></i></button>
+                        <span id="current-month-year">Junho 2025</span>
+                        <button id="next-month"><i class="fas fa-chevron-right"></i></button>
+                    </div>
+                    <div id="calendar-grid" class="calendar-grid">
+                        <div class="day-name">Dom</div>
+                        <div class="day-name">Seg</div>
+                        <div class="day-name">Ter</div>
+                        <div class="day-name">Qua</div>
+                        <div class="day-name">Qui</div>
+                        <div class="day-name">Sex</div>
+                        <div class="day-name">Sáb</div>
+                        </div>
+                    <div id="calendar-tasks-view">
+                        <h3>Tarefas para o dia selecionado:</h3>
+                        <ul id="selected-day-tasks" class="task-list">
+                            <p style="text-align: center; color: var(--secondary-text-color);">Clique em um dia para ver as tarefas!</p>
+                        </ul>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Account and Cloud Sync Section -->
+            <section id="cloud-sync-section">
+                <div class="card">
+                    <h2>Login e Conta</h2>
+
+                    <div class="account-status">
+                        <p>Status da Conta:</p>
+                        <p id="login-status-text" class="status-text logged-out">Não Logado</p>
+                        <p id="logged-in-user-email" style="font-size: 0.9em; color: var(--login-text-color);"></p>
+                        <p id="email-verification-status" style="font-size: 0.9em;"></p> 
+                    </div>
+
+                    <div class="login-buttons">
+                        <h3 style="margin-top: 0;">Login com Email e Senha</h3>
+                        <div class="form-group">
+                            <label for="login-email">Email:</label>
+                            <input type="email" id="login-email" placeholder="seuemail@exemplo.com">
+                        </div>
+                        <div class="form-group">
+                            <label for="login-password">Senha:</label>
+                            <input type="password" id="login-password" placeholder="********">
+                        </div>
+                        <button class="button email" id="login-email-button">
+                            <i class="fas fa-sign-in-alt"></i> Entrar
+                        </button>
+                        <button class="button register" id="register-email-button">
+                            <i class="fas fa-user-plus"></i> Registrar
+                        </button>
+                        <a href="#" class="button link-style" id="forgot-password-button">Esqueceu a senha?</a>
+                        
+                        <hr />
+
+                        <button class="button logout" id="logout-button" style="display: none;">
+                            <i class="fas fa-sign-out-alt"></i> Sair
+                        </button>
+                    </div>
+
+                    <h3 style="margin-top: 30px; color: var(--text-color);">Estatísticas de Tarefas</h3>
+                    <div class="stats-grid">
+                        <div class="stat-item">
+                            <div class="value" id="tasks-total-count">0</div>
+                            <div class="label">Tarefas Total</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="value" id="tasks-completed-count">0</div>
+                            <div class="label">Tarefas Concluídas</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="value" id="tasks-uncompleted-count">0</div>
+                            <div class="label">Tarefas Não Concluídas</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="value" id="tasks-pending-count">0</div>
+                            <div class="label">Tarefas A Verificar</div>
+                        </div>
+                    </div>
+
+                    <h3 style="margin-top: 30px; color: var(--text-color);">Gerenciamento de Dados</h3>
+                    <div class="settings-option">
+                        <label style="color: var(--text-color);">Salvamento de Dados:</label>
+                        <span id="data-save-location" style="font-weight: 500; color: var(--primary-color);">Navegador (Local)</span>
+                    </div>
+
+                    <div class="settings-option">
+                        <label style="color: var(--text-color);" for="delete-cloud-data-toggle">Apagar dados da nuvem após 24h</label>
+                        <label class="switch">
+                            <input type="checkbox" id="delete-cloud-data-toggle">
+                            <span class="slider"></span>
+                        </label>
+                    </div>
+
+                    <button class="button action-button-info" id="sync-now-button">Atualizar Status da Nuvem</button>
+                    <button class="button action-button-danger" id="clear-local-data-button">Limpar Dados Locais</button>
+                </div>
+            </section>
+
+            <!-- Settings Section -->
+            <section id="settings-section">
+                <div class="card">
+                    <h2>Configurações</h2>
+
+                    <div class="settings-option">
+                        <label for="dark-mode-toggle">Modo Escuro</label>
+                        <label class="switch">
+                            <input type="checkbox" id="dark-mode-toggle">
+                            <span class="slider"></span>
+                        </label>
+                    </div>
+
+                    <div class="settings-option">
+                        <label for="task-notifications-toggle">Notificações de Tarefas</label>
+                        <label class="switch">
+                            <input type="checkbox" id="task-notifications-toggle">
+                            <span class="slider"></span>
+                        </label>
+                    </div>
+                    
+                    <div class="settings-option">
+                        <label for="haptic-feedback-toggle">Feedback Tátil</label>
+                        <label class="switch">
+                            <input type="checkbox" id="haptic-feedback-toggle">
+                            <span class="slider"></span>
+                        </label>
+                    </div>
+
+                    <div class="settings-option">
+                        <label for="confirm-dialogs-toggle">Diálogos de Confirmação</label>
+                        <label class="switch">
+                            <input type="checkbox" id="confirm-dialogs-toggle">
+                            <span class="slider"></span>
+                        </label>
+                    </div>
+
+                    <h3>Cor de Destaque</h3>
+                    <div class="color-options">
+                        <!-- Only the default navy blue color option is kept -->
+                        <div class="color-box selected" data-color="blue" data-color-value="#6366F1" style="background-color: #6366F1;"></div>
+                    </div>
+
+                    <h3>Prioridade Padrão da Tarefa</h3>
+                    <div class="priority-options">
+                        <button class="option-button" data-priority="low">Baixa</button>
+                        <button class="option-button selected" data-priority="medium">Média</button>
+                        <button class="option-button" data-priority="high">Alta</button>
+                    </div>
+
+                    <h3>Fonte do Aplicativo</h3>
+                    <div class="font-options">
+                        <button class="option-button selected" data-font="inter">Inter</button>
+                        <button class="option-button" data-font="roboto">Roboto</button>
+                        <button class="option-button" data-font="montserrat">Montserrat</button>
+                        <button class="option-button" data-font="open-sans">Open Sans</button>
+                    </div>
+
+                    <h3>Tamanho da Fonte</h3>
+                    <div class="size-options">
+                        <button class="option-button selected" data-size="default">Padrão</button>
+                        <button class="option-button" data-size="small">Pequena</button>
+                        <button class="option-button" data-size="large">Grande</button>
+                    </div>
+
+                    <h3>Intervalo de Lembrete</h3>
+                    <div class="reminder-options">
+                        <button class="option-button selected" data-reminder="15">15 min antes</button>
+                        <button class="option-button" data-reminder="30">30 min antes</button>
+                        <button class="option-button" data-reminder="60">1 hora antes</button>
+                    </div>
+
+                    <h3>Ordenação de Tarefas</h3>
+                    <div class="sort-by-options">
+                        <button class="option-button selected" data-sort-by="date">Data</button>
+                        <button class="option-button" data-sort-by="title">Título</button>
+                        <button class="option-button" data-sort-by="status">Status</button>
+                    </div>
+                    <div class="sort-order-options" style="margin-top: 10px;">
+                        <button class="option-button selected" data-sort-order="asc">Crescente</button>
+                        <button class="option-button" data-sort-order="desc">Decrescente</button>
+                    </div>
+
+                    <h3>Dia de Início do Calendário</h3>
+                    <div class="calendar-start-options">
+                        <button class="option-button selected" data-start-day="domingo">Domingo</button>
+                        <button class="option-button" data-start-day="segunda">Segunda</button>
+                    </div>
+
+                    <h3>Formato de Exportação</h3>
+                    <div class="export-options">
+                        <button class="option-button selected" data-export-format="json">JSON</button>
+                        <button class="option-button" data-export-format="csv">CSV</button>
+                    </div>
+
+                    <h3>Idioma</h3>
+                    <div class="language-options">
+                        <button class="option-button selected" data-lang="pt-BR">Português (Brasil)</button>
+                        <button class="option-button" data-lang="en-US">English (US)</button>
+                    </div>
+
+                    <h3 style="margin-top: 30px;">Gerenciamento de Dados</h3>
+                    <div class="settings-option">
+                        <label for="auto-remove-completed-tasks">Remover Tarefas Concluídas (após 24h)</label>
+                        <label class="switch">
+                            <input type="checkbox" id="auto-remove-completed-tasks">
+                            <span class="slider"></span>
+                        </label>
+                    </div>
+
+                    <button class="button action-button-info" id="export-data-button">Exportar Meus Dados</button>
+                    <button class="button action-button-danger" id="clear-all-tasks-button">Limpar Todas as Tarefas (Local)</button>
+
+                    <h3 style="margin-top: 30px;">Sobre o Aplicativo</h3>
+                    <p style="text-align: center; color: var(--secondary-text-color);">Versão: 30.0.0</p>
+                    <p style="text-align: center;">
+                        <a href="#" id="privacy-policy-link" style="color: var(--primary-color); text-decoration: none;">Leia nossos Termos de Serviço e Política de Privacidade.</a>
+                    </p>
+                </div>
+            </section>
+        </main>
+
+        <!-- Navigation Footer -->
+        <footer class="nav-bar">
+            <button class="nav-item active" data-section="tasks-section" title="Tarefas">
+                <i class="fas fa-list-ul"></i>
+            </button>
+            <button class="nav-item" data-section="calendar-section" title="Calendário">
+                <i class="fas fa-calendar-alt"></i>
+            </button>
+            <button class="nav-item" data-section="cloud-sync-section" title="Conta">
+                <i class="fas fa-cloud"></i>
+            </button>
+            <button class="nav-item" data-section="settings-section" title="Configurações">
+                <i class="fas fa-cog"></i>
+            </button>
+        </footer>
+    </div>
+
+    <!-- Custom Alert/Confirmation Modal -->
+    <div id="custom-alert-modal" class="custom-modal">
+        <div class="custom-modal-content">
+            <h3 id="modal-title"></h3>
+            <p id="modal-message"></p>
+            <div class="custom-modal-buttons">
+                <button class="confirm-button" id="modal-confirm-button">OK</button>
+                <button class="cancel-button" id="modal-cancel-button" style="display:none;">Cancelar</button>
+            </div>
+        </div>
+    </div>
+
+    <script type="module">
+        // --- Firebase module imports ---
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
+        import { getAuth, signInAnonymously, signInWithCustomToken, onAuthStateChanged, signOut, createUserWithEmailAndPassword, signInWithEmailAndPassword, sendEmailVerification, applyActionCode, reload, sendPasswordResetEmail } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
+        import { getFirestore, doc, getDoc, addDoc, setDoc, updateDoc, deleteDoc, onSnapshot, collection, query, where, getDocs, writeBatch } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
+
+        // --- Firebase Configuration ---
+        // Global variables __app_id, __firebase_config and __initial_auth_token are provided by the Canvas environment.
+        const appId = typeof __app_id !== 'undefined' ? __app_id : 'default-app-id';
+        const firebaseConfig = {
+            apiKey: "AIzaSyBXIeFlfdul0-uwH9LHKo60YW2XTf9vh0A",
+            authDomain: "facilita-estudant-fcest.firebaseapp.com",
+            projectId: "facilita-estudant-fcest",
+            storageBucket: "facilita-estudant-fcest.firebaseapp.com",
+            messagingSenderId: "80862298390",
+            appId: "1:80862298390:web:9f1480971266fc82c11037",
+            measurementId: "G-N3Q7HFLJL7"
+        };
+        const initialAuthToken = typeof __initial_auth_token !== 'undefined' ? __initial_auth_token : null; 
+
+        // Initialize Firebase
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+        const db = getFirestore(app);
+
+        // --- Global Variables and Initialization ---
+        let tasks = []; // Tasks managed locally and synchronized with the cloud
+        let currentMonth = new Date(); // Current month for the calendar
+        let currentUser = null; // Logged-in Firebase user object
+        let isAuthReady = false; // Flag to indicate that onAuthStateChanged has been triggered
+        let taskUnsubscribe = null; // Function to unsubscribe the onSnapshot listener
+        let settingsUnsubscribe = null; // Function to unsubscribe the onSnapshot listener for settings
+        let isCloudSyncingActive = false; // State for real-time synchronization indicator
+
+        let settings = {
+            darkMode: false,
+            taskNotifications: true, // This setting will now control native/web notifications
+            hapticFeedback: true,
+            confirmDialogs: true, // New: Enable/disable confirmation dialogs
+            primaryColor: '#6366F1', // Default indigo blue
+            defaultTaskPriority: 'medium', // New: Default priority for new tasks
+            fontFamily: 'inter', // Default to Inter
+            fontSize: 'default',
+            reminderInterval: '15',
+            taskSortBy: 'date', // New: Task sorting preference
+            taskSortOrder: 'asc', // New: Task sorting order
+            calendarStartDay: 'domingo',
+            exportFormat: 'json',
+            autoRemoveCompletedTasks: false,
+            autoDeleteCloudData: false, // New: delete cloud data after 24h (if implemented)
+            language: 'pt-BR', // NEW: Default language
+        };
+
+        // --- DOM Elements ---
+        const sections = document.querySelectorAll('main section');
+        const navItems = document.querySelectorAll('.nav-item');
+        const taskList = document.getElementById('task-list');
+        const noTasksMessage = document.getElementById('no-tasks-message');
+        const addTaskButton = document.getElementById('add-task-button');
+        const taskTitleInput = document.getElementById('task-title');
+        const taskDescriptionInput = document.getElementById('task-description');
+        const taskDateInput = document.getElementById('task-date');
+        const taskTimeInput = document.getElementById('task-time');
+
+        // Calendar Elements
+        const currentMonthYearSpan = document.getElementById('current-month-year');
+        const calendarGrid = document.getElementById('calendar-grid');
+        const prevMonthButton = document.getElementById('prev-month');
+        const nextMonthButton = document.getElementById('next-month');
+        const selectedDayTasksList = document.getElementById('selected-day-tasks');
+
+        // Settings Elements
+        const darkModeToggle = document.getElementById('dark-mode-toggle');
+        const taskNotificationsToggle = document.getElementById('task-notifications-toggle');
+        const hapticFeedbackToggle = document.getElementById('haptic-feedback-toggle');
+        const confirmDialogsToggle = document.getElementById('confirm-dialogs-toggle'); // New toggle
+        const colorOptions = document.querySelector('.color-options');
+        // const customColorInput = document.getElementById('custom-color-input'); // Removed custom color input
+        const defaultTaskPriorityOptions = document.querySelector('.priority-options'); // New element
+        const fontOptions = document.querySelector('.font-options');
+        const sizeOptions = document.querySelector('.size-options');
+        const reminderOptions = document.querySelector('.reminder-options');
+        const taskSortByOptions = document.querySelector('.sort-by-options'); // New element
+        const taskSortOrderOptions = document.querySelector('.sort-order-options'); // New element
+        const calendarStartOptions = document.querySelector('.calendar-start-options');
+        const exportOptions = document.querySelector('.export-options');
+        const autoRemoveCompletedTasksToggle = document.getElementById('auto-remove-completed-tasks');
+        const exportDataButton = document.getElementById('export-data-button');
+        const clearAllTasksButton = document.getElementById('clear-all-tasks-button');
+        const privacyPolicyLink = document.getElementById('privacy-policy-link'); // New element
+        const languageOptions = document.querySelector('.language-options'); // NEW: Language options
+
+        // Account and Cloud Sync section elements
+        const loginStatusText = document.getElementById('login-status-text');
+        const loggedInUserEmail = document.getElementById('logged-in-user-email');
+        const emailVerificationStatus = document.getElementById('email-verification-status'); // New element for verification status
+        // const cloudSyncStatusIndicator = document.getElementById('cloud-sync-status-indicator'); // Cloud status indicator (removed from UI)
+
+        const logoutButton = document.getElementById('logout-button'); // Unified logout button
+
+        // New elements for email/password login/registration
+        const loginEmailInput = document.getElementById('login-email');
+        const loginPasswordInput = document.getElementById('login-password');
+        const loginEmailButton = document.getElementById('login-email-button');
+        const registerEmailButton = document.getElementById('register-email-button');
+        const forgotPasswordButton = document.getElementById('forgot-password-button'); // New button
+
+        const tasksTotalCount = document.getElementById('tasks-total-count');
+        const tasksCompletedCount = document.getElementById('tasks-completed-count');
+        const tasksUncompletedCount = document.getElementById('tasks-uncompleted-count');
+        const tasksPendingCount = document.getElementById('tasks-pending-count');
+        const dataSaveLocation = document.getElementById('data-save-location');
+        const deleteCloudDataToggle = document.getElementById('delete-cloud-data-toggle');
+        const syncNowButton = document.getElementById('sync-now-button'); // Now only updates visual status
+        const clearLocalDataButton = document.getElementById('clear-local-data-button');
+
+        // Custom Modal Elements
+        const customAlertModal = document.getElementById('custom-alert-modal');
+        const modalTitle = document.getElementById('modal-title');
+        const modalMessage = document.getElementById('modal-message');
+        const modalConfirmButton = document.getElementById('modal-confirm-button');
+        const modalCancelButton = document.getElementById('modal-cancel-button');
+
+        // Loading Screen Elements
+        const loadingScreen = document.getElementById('loading-screen'); // Reference to the loading screen
+        let hasUserEverLoggedOrRegistered = localStorage.getItem('hasUserEverLoggedOrRegistered') === 'true'; // Flag for first-time auth loading
+
+        // Online/Offline Indicator Elements
+        const onlineStatusIndicator = document.getElementById('online-status-indicator');
+        const statusText = document.getElementById('status-text');
+
+        // Global variable to hold the resolve function of the current modal's Promise
+        let currentModalResolve = null;
+
+        // --- Utility Functions ---
+        function generateUniqueId() {
+            return '_' + Math.random().toString(36).substr(2, 9);
+        }
+
+        function triggerHapticFeedback() {
+            if (settings.hapticFeedback && navigator.vibrate) {
+                navigator.vibrate(50); // Vibrates for 50ms
+            }
+        }
+
+        function formatDateForInput(date) {
+            const d = new Date(date);
+            const year = d.getFullYear();
+            const month = String(d.getMonth() + 1).padStart(2, '0');
+            const day = String(d.getDate()).padStart(2, '0');
+            return `${year}-${month}-${day}`;
+        }
+
+        function getTodayDateString() {
+            const today = new Date();
+            return `${today.getFullYear()}-${String(today.getMonth() + 1).padStart(2, '0')}-${String(today.getDate()).padStart(2, '0')}`;
+        }
+
+        // Modal button handlers, defined once
+        function handleModalConfirm() {
+            customAlertModal.style.display = 'none'; // Hide the modal
+            if (currentModalResolve) {
+                currentModalResolve(true); // Resolve the Promise with true (OK/Confirm)
+                currentModalResolve = null; // Clear the reference
+            }
+        }
+
+        function handleModalCancel() {
+            customAlertModal.style.display = 'none'; // Hide the modal
+            if (currentModalResolve) {
+                currentModalResolve(false); // Resolve the Promise with false (Cancel)
+                currentModalResolve = null; // Clear the reference
+            }
+        }
+
+        /**
+         * Displays a custom modal to replace alert() and confirm().
+         * @param {string} title The modal title.
+         * @param {string} message The message to display.
+         * @param {boolean} isConfirm If true, displays OK and Cancel buttons. Otherwise, only OK.
+         * @returns {Promise<boolean>} Returns a Promise that resolves to true if OK is clicked, false if Cancel.
+         */
+        function showCustomModal(title, message, isConfirm = false) {
+            return new Promise((resolve) => {
+                // If it's a confirmation and confirmDialogs is false, auto-confirm
+                if (isConfirm && !settings.confirmDialogs) {
+                    resolve(true);
+                    return;
+                }
+
+                // Set the resolve function for this modal instance
+                currentModalResolve = resolve;
+
+                modalTitle.textContent = title;
+                modalMessage.innerHTML = message; // Use innerHTML to allow bold/italic
+
+                if (isConfirm) {
+                    modalConfirmButton.textContent = 'OK';
+                    modalCancelButton.style.display = 'inline-block';
+                } else {
+                    modalConfirmButton.textContent = 'Fechar';
+                    modalCancelButton.style.display = 'none';
+                }
+
+                customAlertModal.style.display = 'flex'; // Make the modal visible via JS
+            });
+        }
+
+        /**
+         * Shows the loading screen.
+         */
+        function showLoadingScreen() {
+            loadingScreen.classList.remove('hidden');
+        }
+
+        /**
+         * Hides the loading screen.
+         */
+        function hideLoadingScreen() {
+            loadingScreen.classList.add('hidden');
+        }
+
+        /**
+         * Updates the online/offline status indicator.
+         */
+        function updateOnlineStatus() {
+            if (navigator.onLine) {
+                onlineStatusIndicator.classList.remove('offline');
+                onlineStatusIndicator.classList.add('online');
+                statusText.textContent = 'Online';
+            } else {
+                onlineStatusIndicator.classList.remove('online');
+                onlineStatusIndicator.classList.add('offline');
+                statusText.textContent = 'Offline';
+            }
+        }
+
+        /**
+         * Sends a native notification using Median Bridge if available,
+         * falls back to Web Notifications, or custom modal.
+         * @param {string} title The notification title.
+         * @param {string} body The notification body text.
+         * @param {object} [options={}] Additional options for the notification (e.g., id, data).
+         */
+        async function sendNativeNotification(title, body, options = {}) {
+            if (settings.taskNotifications) { // Only send if notifications are enabled in settings
+                // 1. Try Median JavaScript Bridge
+                // IMPORTANT: 'window.median' is a common name, but verify with Median's documentation.
+                // The method name 'sendNotification' and its parameters also need verification.
+                if (window.median && typeof window.median.sendNotification === 'function') {
+                    try {
+                        await window.median.sendNotification({
+                            title: title,
+                            body: body,
+                            // You can pass more data if Median Bridge supports it
+                            // For example, if you want to open a specific task when notification is tapped:
+                            // data: { taskId: options.taskId || null } 
+                        });
+                        console.log("Notificação nativa enviada via Median Bridge.");
+                        return; // Exit if native notification sent
+                    } catch (error) {
+                        console.error("Erro ao enviar notificação via Median Bridge:", error);
+                        // Continue to fallback if Median Bridge fails
+                    }
+                }
+
+                // 2. Fallback to Web Notifications API
+                if ('Notification' in window) {
+                    if (Notification.permission === 'granted') {
+                        new Notification(title, { body: body, ...options });
+                        console.log("Notificação web padrão enviada.");
+                        return; // Exit if web notification sent
+                    } else if (Notification.permission === 'default') {
+                        // Request permission if it hasn't been granted or denied yet
+                        const permission = await Notification.requestPermission();
+                        if (permission === 'granted') {
+                            new Notification(title, { body: body, ...options });
+                            console.log("Permissão de notificação concedida e notificação web enviada.");
+                            return; // Exit if web notification sent
+                        }
+                    }
+                }
+
+                // 3. Fallback to Custom Modal if no other notification method works
+                showCustomModal("Notificação", `<b>${title}</b><br>${body}`);
+                console.warn("Nenhum método de notificação (nativa ou web) funcionou. Exibindo no modal.");
+            } else {
+                console.log("Notificações desativadas nas configurações.");
+            }
+        }
+
+
+        // --- Persistence Functions (localStorage and Firebase) ---
+        async function saveTasksLocal() {
+            // Saves only to localStorage
+            localStorage.setItem('facilitaEstudanteTasks', JSON.stringify(tasks));
+            updateCloudSyncSectionUI(); // Update statistics
+        }
+
+        async function saveTaskToFirestore(task) {
+            if (currentUser && currentUser.emailVerified && isCloudSyncingActive) {
+                const userId = currentUser.uid;
+                const userTasksCollectionRef = collection(db, 'artifacts', appId, 'users', userId, 'userTasks');
+                try {
+                    const docRef = doc(userTasksCollectionRef, task.id);
+                    await setDoc(docRef, task); // Uses setDoc to create or update
+                    console.log("Task saved to Firestore:", task.id);
+                } catch (error) {
+                    console.error("Error saving task to Firestore:", error);
+                    updateCloudStatusIndicator('red', 'Error syncing with cloud');
+                }
+            }
+        }
+
+        async function deleteTaskFromFirestore(taskId) {
+             if (currentUser && currentUser.emailVerified && isCloudSyncingActive) {
+                const userId = currentUser.uid;
+                const userTasksCollectionRef = collection(db, 'artifacts', appId, 'users', userId, 'userTasks');
+                try {
+                    const docRef = doc(userTasksCollectionRef, taskId);
+                    await deleteDoc(docRef);
+                    console.log("Task deleted from Firestore:", taskId);
+                } catch (error) {
+                    console.error("Error deleting task from Firestore:", error);
+                    updateCloudStatusIndicator('red', 'Error syncing with cloud');
+                }
+            }
+        }
+
+
+        function loadTasksFromLocal() {
+            const storedTasks = localStorage.getItem('facilitaEstudanteTasks');
+            if (storedTasks) {
+                tasks = JSON.parse(storedTasks);
+                // Ensure tasks.completedAt and status exist
+                tasks.forEach(task => {
+                    if (task.status === undefined) { // Migration from 'completed' to 'status'
+                        task.status = task.completed ? 'completed' : 'uncompleted';
+                        delete task.completed; // Remove old property
+                    }
+                    if (task.status === 'completed' && !task.completedAt) {
+                        task.completedAt = task.createdAt; // Set as createdAt if already completed and no date
+                    }
+                    if (task.priority === undefined) { // New: Add default priority if missing
+                        task.priority = 'medium';
+                    }
+                });
+            } else {
+                 tasks = []; // Ensures tasks is an empty array if no data
+            }
+            renderTasks();
+            renderCalendar();
+            updateCloudSyncSectionUI(); // Update statistics
+        }
+
+        async function saveSettings() {
+            localStorage.setItem('facilitaEstudanteSettings', JSON.stringify(settings));
+            applySettings(); // Apply settings immediately after saving
+            
+            // Save settings to Firestore if user is logged in AND email is verified
+            if (currentUser && currentUser.emailVerified) {
+                const userId = currentUser.uid;
+                // The collection path in Firestore should be /artifacts/{appId}/users/{userId}/settings/userSettings
+                const userSettingsDocRef = doc(db, 'artifacts', appId, 'users', userId, 'settings', 'userSettings');
+                try {
+                    await setDoc(userSettingsDocRef, settings, { merge: true });
+                    console.log("Settings synchronized with Firestore!");
+                } catch (error) {
+                    console.error("Error synchronizing settings with Firestore:", error);
+                }
+            } else if (currentUser && !currentUser.emailVerified) {
+                console.warn("Settings not saved to cloud: Email not verified. Automatic cloud sync disabled.");
+            }
+        }
+
+        async function loadSettings() {
+            const storedSettings = localStorage.getItem('facilitaEstudanteSettings');
+            if (storedSettings) {
+                Object.assign(settings, JSON.parse(storedSettings));
+            }
+            // Try to load from Firestore if logged in, isAuthReady AND email is verified
+            if (currentUser && isAuthReady && currentUser.emailVerified) {
+                const userId = currentUser.uid;
+                const userSettingsDocRef = doc(db, 'artifacts', appId, 'users', userId, 'settings', 'userSettings');
+                try {
+                    const docSnapshot = await getDoc(userSettingsDocRef);
+                    if (docSnapshot.exists()) {
+                        Object.assign(settings, docSnapshot.data());
+                        console.log("Settings loaded from Firestore.");
+                    }
+                } catch (error) {
+                    console.error("Error loading settings from Firestore:", error);
+                }
+            } else if (currentUser && !currentUser.emailVerified) {
+                console.warn("Settings not loaded from cloud: Email not verified.");
+            }
+
+
+            applySettings(); // Apply settings when loading the app
+            updateSettingsUI(); // Update settings UI elements
+            updateCloudSyncSectionUI(); // Update account section UI
+        }
+
+        // --- UI / Rendering Functions ---
+        function updateCloudStatusIndicator(status, message) {
+            // This indicator is no longer displayed in the UI, but the function is kept for consistency
+            // and in case a visual indicator needs to be re-introduced in the future.
+            // cloudSyncStatusIndicator.classList.remove('sync-status-green', 'sync-status-red', 'sync-status-white');
+            // cloudSyncStatusIndicator.textContent = message;
+            // cloudSyncStatusIndicator.classList.add(`sync-status-${status}`);
+        }
+
+        function showSection(sectionId) {
+            sections.forEach(section => {
+                section.classList.remove('active');
+            });
+            document.getElementById(sectionId).classList.add('active');
+
+            navItems.forEach(item => {
+                item.classList.remove('active');
+                if (item.dataset.section === sectionId) {
+                    item.classList.add('active');
+                }
+            });
+
+            // Update task list when switching to tasks section
+            if (sectionId === 'tasks-section') {
+                renderTasks();
+            } else if (sectionId === 'calendar-section') {
+                renderCalendar();
+            } else if (sectionId === 'cloud-sync-section') {
+                updateCloudSyncSectionUI();
+            }
+            // Scroll to the top of the page when changing sections (improves experience)
+            document.querySelector('main').scrollTop = 0;
+        }
+
+        function renderTasks() {
+            taskList.innerHTML = ''; // Clear the list
+            if (tasks.length === 0) {
+                noTasksMessage.style.display = 'block';
+                return;
+            } else {
+                noTasksMessage.style.display = 'none';
+            }
+
+            // Sort tasks based on settings
+            const sortedTasks = [...tasks].sort((a, b) => {
+                let comparison = 0;
+                const sortBy = settings.taskSortBy;
+                const sortOrder = settings.taskSortOrder;
+
+                if (sortBy === 'date') {
+                    const dateTimeA = new Date(`${a.date}T${a.time}`);
+                    const dateTimeB = new Date(`${b.date}T${b.time}`);
+                    comparison = dateTimeA - dateTimeB;
+                } else if (sortBy === 'title') {
+                    comparison = a.title.localeCompare(b.title);
+                } else if (sortBy === 'status') {
+                    const statusOrder = { 'uncompleted': 1, 'pending': 2, 'completed': 3 };
+                    comparison = statusOrder[a.status] - statusOrder[b.status];
+                }
+
+                return sortOrder === 'asc' ? comparison : -comparison;
+            });
+
+            sortedTasks.forEach(task => {
+                const listItem = document.createElement('li');
+                listItem.classList.add('task-item');
+                // Add status class to apply border color and styles
+                listItem.classList.add(`status-${task.status}`);
+                listItem.dataset.id = task.id;
+
+                const statusIcon = {
+                    'completed': '<i class="fas fa-check-circle"></i>',
+                    'uncompleted': '<i class="fas fa-times-circle"></i>',
+                    'pending': '<i class="fas fa-question-circle"></i>'
+                };
+                const statusTitle = {
+                    'completed': 'Marcar como A Verificar',
+                    'uncompleted': 'Marcar como Concluída',
+                    'pending': 'Marcar como Não Concluída'
+                }
+
+                // Priority icon
+                let priorityIcon = '';
+                if (task.priority === 'high') {
+                    priorityIcon = '<i class="fas fa-exclamation-circle" style="color: #EF4444; margin-right: 5px;"></i>'; // Red exclamation
+                } else if (task.priority === 'medium') {
+                    priorityIcon = '<i class="fas fa-minus-circle" style="color: #F59E0B; margin-right: 5px;"></i>'; // Orange minus
+                } else if (task.priority === 'low') {
+                    priorityIcon = '<i class="fas fa-info-circle" style="color: #6B7280; margin-right: 5px;"></i>'; // Gray info
+                }
+
+                const taskContent = `
+                    <div>
+                        <h4 class="task-title">${priorityIcon}${task.title}</h4>
+                        <p>${task.description ? task.description : 'Sem descrição'}</p>
+                        <p>Data: ${new Date(task.date + 'T' + task.time).toLocaleDateString('pt-BR')} - ${task.time}</p>
+                    </div>
+                    <div class="task-actions">
+                        <button class="status-button status-${task.status}-btn" data-status="${task.status}" title="${statusTitle[task.status]}">
+                            ${statusIcon[task.status]}
+                        </button>
+                        <button class="edit-task" title="Editar Tarefa">
+                            <i class="fas fa-edit"></i>
+                        </button>
+                        <button class="delete-task" title="Excluir Tarefa">
+                            <i class="fas fa-trash-alt"></i>
+                        </button>
+                    </div>
+                `;
+                listItem.innerHTML = taskContent;
+                taskList.appendChild(listItem);
+            });
+            updateCloudSyncSectionUI(); // Update statistics after rendering tasks
+        }
+
+        function renderCalendar() {
+            // Clear the calendar grid, but keep day names
+            calendarGrid.innerHTML = `
+                <div class="day-name">Dom</div>
+                <div class="day-name">Seg</div>
+                <div class="day-name">Ter</div>
+                <div class="day-name">Qua</div>
+                <div class="day-name">Qui</div>
+                <div class="day-name">Sex</div>
+                <div class="day-name">Sáb</div>
+            `;
+            selectedDayTasksList.innerHTML = '<p style="text-align: center; color: var(--secondary-text-color);">Clique em um dia para ver as tarefas!</p>';
+            
+            const monthNames = ["Janeiro", "Fevereiro", "Março", "Abril", "Maio", "Junho", "Julho", "Agosto", "Setembro", "Outubro", "Novembro", "Dezembro"];
+            currentMonthYearSpan.textContent = `${monthNames[currentMonth.getMonth()]} ${currentMonth.getFullYear()}`;
+
+            const year = currentMonth.getFullYear();
+            const month = currentMonth.getMonth();
+
+            // Determine the first day of the month and the last day of the month
+            const firstDayOfMonth = new Date(year, month, 1);
+            const daysInMonth = new Date(year, month + 1, 0).getDate();
+
+            // Adjust start day of the week (0=Sun, 1=Mon...)
+            let startDayOfWeek = firstDayOfMonth.getDay(); // 0 for Sunday, 1 for Monday, etc.
+            if (settings.calendarStartDay === 'segunda') {
+                startDayOfWeek = (startDayOfWeek === 0) ? 6 : startDayOfWeek - 1; // If Sunday (0), becomes 6 (Saturday), otherwise -1
+            }
+
+            // Fill empty days at the beginning to align with the correct day of the week
+            for (let i = 0; i < startDayOfWeek; i++) {
+                const emptyDay = document.createElement('div');
+                emptyDay.classList.add('day', 'empty');
+                calendarGrid.appendChild(emptyDay);
+            }
+
+            // Fill the days of the month
+            for (let day = 1; day <= daysInMonth; day++) {
+                const dayElement = document.createElement('div');
+                dayElement.classList.add('day');
+                dayElement.textContent = day;
+                
+                const currentDate = new Date(year, month, day);
+                dayElement.dataset.date = formatDateForInput(currentDate);
+
+                const today = new Date();
+                if (day === today.getDate() && month === today.getMonth() && year === today.getFullYear()) {
+                    dayElement.classList.add('current-day');
+                }
+
+                // Check if there are tasks for this day and their statuses
+                const tasksForDay = tasks.filter(task => {
+                    const taskDate = new Date(task.date + 'T00:00:00'); // Only the date
+                    return taskDate.toDateString() === currentDate.toDateString();
+                });
+
+                if (tasksForDay.length > 0) {
+                    dayElement.classList.add('has-tasks'); // Generic marker
+                    
+                    // Add specific status classes for the border
+                    const hasUncompleted = tasksForDay.some(t => t.status === 'uncompleted');
+                    const hasPending = tasksForDay.some(t => t.status === 'pending');
+                    const hasCompleted = tasksForDay.some(t => t.status === 'completed');
+
+                    if (hasPending) {
+                        dayElement.classList.add('has-pending-tasks');
+                    } else if (hasUncompleted) {
+                        dayElement.classList.add('has-uncompleted-tasks');
+                    } else if (hasCompleted) {
+                        dayElement.classList.add('has-completed-tasks');
+                    }
+                }
+                
+                dayElement.addEventListener('click', () => {
+                    displayTasksForDay(dayElement.dataset.date);
+                    triggerHapticFeedback();
+                });
+
+                calendarGrid.appendChild(dayElement);
+            }
+        }
+
+        function displayTasksForDay(dateString) {
+            selectedDayTasksList.innerHTML = '';
+            const tasksOnSelectedDay = tasks.filter(task => task.date === dateString)
+                                        .sort((a, b) => a.time.localeCompare(b.time));
+
+            if (tasksOnSelectedDay.length === 0) {
+                selectedDayTasksList.innerHTML = `<p style="text-align: center; color: var(--secondary-text-color);">Nenhuma tarefa para ${new Date(dateString + 'T00:00:00').toLocaleDateString('pt-BR')}.</p>`;
+                return;
+            }
+
+            tasksOnSelectedDay.forEach(task => {
+                const listItem = document.createElement('li');
+                listItem.classList.add('task-item');
+                // Add status class to apply border color and styles
+                listItem.classList.add(`status-${task.status}`);
+                listItem.dataset.id = task.id;
+
+                const statusIcon = {
+                    'completed': '<i class="fas fa-check-circle"></i>',
+                    'uncompleted': '<i class="fas fa-times-circle"></i>',
+                    'pending': '<i class="fas fa-question-circle"></i>'
+                };
+                const statusTitle = {
+                    'completed': 'Marcar como A Verificar',
+                    'uncompleted': 'Marcar como Concluída',
+                    'pending': 'Marcar como Não Concluída'
+                }
+
+                // Priority icon
+                let priorityIcon = '';
+                if (task.priority === 'high') {
+                    priorityIcon = '<i class="fas fa-exclamation-circle" style="color: #EF4444; margin-right: 5px;"></i>'; // Red exclamation
+                } else if (task.priority === 'medium') {
+                    priorityIcon = '<i class="fas fa-minus-circle" style="color: #F59E0B; margin-right: 5px;"></i>'; // Orange minus
+                } else if (task.priority === 'low') {
+                    priorityIcon = '<i class="fas fa-info-circle" style="color: #6B7280; margin-right: 5px;"></i>'; // Gray info
+                }
+
+                listItem.innerHTML = `
+                    <div>
+                        <h4 class="task-title">${priorityIcon}${task.title}</h4>
+                        <p>${task.description ? task.description : 'Sem descrição'}</p>
+                        <p>Hora: ${task.time}</p>
+                    </div>
+                    <div class="task-actions">
+                        <button class="status-button status-${task.status}-btn" data-status="${task.status}" title="${statusTitle[task.status]}">
+                            ${statusIcon[task.status]}
+                        </button>
+                        <button class="edit-task" title="Editar Tarefa">
+                            <i class="fas fa-edit"></i>
+                        </button>
+                        <button class="delete-task" title="Excluir Tarefa">
+                            <i class="fas fa-trash-alt"></i>
+                        </button>
+                    </div>
+                `;
+                selectedDayTasksList.appendChild(listItem);
+            });
+        }
+
+
+        function applySettings() {
+            const body = document.body;
+
+            // Dark Mode
+            if (settings.darkMode) {
+                body.classList.add('dark-mode');
+            } else {
+                body.classList.remove('dark-mode');
+            }
+
+            // Highlight Color
+            const root = document.documentElement;
+            // Always set to the default navy blue
+            settings.primaryColor = '#6366F1'; // Ensure settings always reflect the default
+            root.style.setProperty('--primary-color', settings.primaryColor);
+            root.style.setProperty('--tab-icon-active-color', settings.primaryColor);
+            root.style.setProperty('--button-primary-bg', settings.primaryColor);
+            
+            // Get RGB values for the primary color for rgba shadows
+            const hex = settings.primaryColor.replace('#', '');
+            const r = parseInt(hex.substring(0, 2), 16);
+            const g = parseInt(hex.substring(2, 4), 16);
+            const b = parseInt(hex.substring(4, 6), 16);
+            root.style.setProperty('--primary-color-rgb', `${r}, ${g}, ${b}`);
+
+            // Set primary-dark based on primary-color (now fixed to navy blue's dark variant)
+            root.style.setProperty('--primary-dark', '#4F46E5'); // indigo-600 (darker version of #6366F1)
+
+
+            // Remove old font classes (if any)
+            body.classList.remove('font-inter', 'font-montserrat', 'font-roboto', 'font-open-sans');
+            body.classList.add('font-' + settings.fontFamily);
+
+            // Font Size
+            body.classList.remove('font-small', 'font-large');
+            if (settings.fontSize === 'small') {
+                body.classList.add('font-small');
+            } else if (settings.fontSize === 'large') {
+                body.classList.add('font-large');
+            }
+        }
+
+        function updateSettingsUI() {
+            // Update toggles
+            darkModeToggle.checked = settings.darkMode;
+            taskNotificationsToggle.checked = settings.taskNotifications;
+            hapticFeedbackToggle.checked = settings.hapticFeedback;
+            confirmDialogsToggle.checked = settings.confirmDialogs; // New toggle
+            autoRemoveCompletedTasksToggle.checked = settings.autoRemoveCompletedTasks;
+            deleteCloudDataToggle.checked = settings.autoDeleteCloudData;
+
+            // Update color selections (only the default is present now)
+            // Ensure the default color box is always selected
+            document.querySelectorAll('.color-box').forEach(box => {
+                box.classList.remove('selected');
+            });
+            document.querySelector('.color-box[data-color-value="#6366F1"]').classList.add('selected');
+
+
+            // Update default task priority selections
+            document.querySelectorAll('.priority-options .option-button').forEach(button => {
+                if (button.dataset.priority === settings.defaultTaskPriority) {
+                    button.classList.add('selected');
+                } else {
+                    button.classList.remove('selected');
+                }
+            });
+
+            // Update font selections
+            document.querySelectorAll('.font-options .option-button').forEach(button => {
+                if (button.dataset.font === settings.fontFamily) {
+                    button.classList.add('selected');
+                } else {
+                    button.classList.remove('selected');
+                }
+            });
+
+            // Update font size selections
+            document.querySelectorAll('.size-options .option-button').forEach(button => {
+                if (button.dataset.size === settings.fontSize) {
+                    button.classList.add('selected');
+                } else {
+                    button.classList.remove('selected');
+                }
+            });
+
+            // Update reminder selections
+            document.querySelectorAll('.reminder-options .option-button').forEach(button => {
+                if (button.dataset.reminder === settings.reminderInterval) {
+                    button.classList.add('selected');
+                } else {
+                    button.classList.remove('selected');
+                }
+            });
+
+            // Update task sorting preferences
+            document.querySelectorAll('.sort-by-options .option-button').forEach(button => {
+                if (button.dataset.sortBy === settings.taskSortBy) {
+                    button.classList.add('selected');
+                } else {
+                    button.classList.remove('selected');
+                }
+            });
+            document.querySelectorAll('.sort-order-options .option-button').forEach(button => {
+                if (button.dataset.sortOrder === settings.taskSortOrder) {
+                    button.classList.add('selected');
+                } else {
+                    button.classList.remove('selected');
+                }
+            });
+
+
+            // Update calendar start day selections
+            document.querySelectorAll('.calendar-start-options .option-button').forEach(button => {
+                if (button.dataset.startDay === settings.calendarStartDay) {
+                    button.classList.add('selected');
+                } else {
+                    button.classList.remove('selected');
+                }
+            });
+
+            // Update export format selections
+            document.querySelectorAll('.export-options .option-button').forEach(button => {
+                if (button.dataset.exportFormat === settings.exportFormat) {
+                    button.classList.add('selected');
+                } else {
+                    button.classList.remove('selected');
+                }
+            });
+
+            // Update language selections
+            document.querySelectorAll('.language-options .option-button').forEach(button => {
+                if (button.dataset.lang === settings.language) {
+                    button.classList.add('selected');
+                } else {
+                    button.classList.remove('selected');
+                }
+            });
+        }
+
+
+        // --- Account and Cloud Sync Section Functions (Firebase) ---
+        function updateCloudSyncSectionUI() {
+            // Login Status
+            if (currentUser) {
+                loginStatusText.textContent = 'Logado';
+                loginStatusText.classList.remove('logged-out');
+                loggedInUserEmail.textContent = `Email: ${currentUser.email || 'N/A'}`;
+                
+                // Display email verification status
+                if (currentUser.emailVerified) {
+                    emailVerificationStatus.textContent = 'Email Verificado: Sim';
+                    emailVerificationStatus.style.color = 'var(--task-completed-color)'; // Green
+                } else {
+                    emailVerificationStatus.textContent = 'Email Verificado: Não (verifique sua caixa de entrada)';
+                    emailVerificationStatus.style.color = 'var(--task-pending-color)'; /* Amber for better visibility on dark/gradient background */
+                }
+
+                loginEmailButton.style.display = 'none';
+                registerEmailButton.style.display = 'none';
+                loginEmailInput.style.display = 'none';
+                loginPasswordInput.style.display = 'none';
+                forgotPasswordButton.style.display = 'none'; // Hide forgot password button
+                logoutButton.style.display = 'block';
+                // Ensure the invisible HR is kept or removed along with the buttons
+                document.querySelector('#cloud-sync-section .login-buttons hr').style.display = 'none';
+                document.querySelector('#cloud-sync-section .login-buttons h3').style.display = 'none';
+
+                dataSaveLocation.textContent = currentUser.emailVerified ? "Navegador (Local) e Nuvem (Firebase)" : "Navegador (Local) (Nuvem sem sincronização)";
+
+            } else {
+                loginStatusText.textContent = 'Não Logado';
+                loginStatusText.classList.add('logged-out');
+                loggedInUserEmail.textContent = '';
+                emailVerificationStatus.textContent = ''; // Clear verification status
+                loginEmailButton.style.display = 'block';
+                registerEmailButton.style.display = 'block';
+                loginEmailInput.style.display = 'block';
+                loginPasswordInput.style.display = 'block';
+                forgotPasswordButton.style.display = 'block'; // Show forgot password button
+                logoutButton.style.display = 'none';
+                // Show HRs and "Or with Email and Password" title
+                document.querySelector('#cloud-sync-section .login-buttons hr').style.display = 'block';
+                document.querySelector('#cloud-sync-section .login-buttons h3').style.display = 'block';
+
+                dataSaveLocation.textContent = "Navegador (Local)";
+            }
+
+            // Task Statistics
+            tasksTotalCount.textContent = tasks.length;
+            tasksCompletedCount.textContent = tasks.filter(task => task.status === 'completed').length;
+            tasksUncompletedCount.textContent = tasks.filter(task => task.status === 'uncompleted').length;
+            tasksPendingCount.textContent = tasks.filter(task => task.status === 'pending').length;
+
+            // Toggle for deleting cloud data
+            deleteCloudDataToggle.checked = settings.autoDeleteCloudData;
+        }
+
+        // --- Task Management ---
+        async function addTask() {
+            const title = taskTitleInput.value.trim();
+            const description = taskDescriptionInput.value.trim();
+            const date = taskDateInput.value;
+            const time = taskTimeInput.value;
+
+            if (!title || !date || !time) {
+                // Using the custom modal
+                showCustomModal('Erro', 'Por favor, preencha o Título, Data e Hora da tarefa.');
+                return;
+            }
+
+            const newTask = {
+                id: generateUniqueId(),
+                title,
+                description,
+                date,
+                time,
+                status: 'uncompleted', // New field: 'uncompleted', 'completed', 'pending'
+                priority: settings.defaultTaskPriority, // Use default priority from settings
+                createdAt: new Date().toISOString()
+            };
+
+            // If the user is logged in and email verified, save to Firestore.
+            // onSnapshot will handle UI update.
+            if (currentUser && currentUser.emailVerified) {
+                await saveTaskToFirestore(newTask);
+            } else {
+                // Otherwise, add locally and save to localStorage
+                tasks.push(newTask);
+                await saveTasksLocal();
+                renderTasks();
+                renderCalendar();
+            }
+
+            triggerHapticFeedback();
+            // Send notification for new task
+            sendNativeNotification("Tarefa Adicionada!", `"${newTask.title}" foi adicionada para ${new Date(newTask.date + 'T' + newTask.time).toLocaleDateString('pt-BR')} às ${newTask.time}.`);
+
+
+            // Clear the form
+            taskTitleInput.value = '';
+            taskDescriptionInput.value = '';
+            taskDateInput.value = '';
+            taskTimeInput.value = '';
+        }
+
+        async function toggleTaskStatus(id, currentStatus) {
+            const taskIndex = tasks.findIndex(task => task.id === id);
+            if (taskIndex > -1) {
+                let newStatus;
+                let completedAt = tasks[taskIndex].completedAt;
+
+                switch (currentStatus) {
+                    case 'uncompleted':
+                        newStatus = 'completed';
+                        completedAt = new Date().toISOString();
+                        sendNativeNotification("Tarefa Concluída!", `Parabéns! Você concluiu a tarefa: "${tasks[taskIndex].title}".`);
+                        break;
+                    case 'completed':
+                        newStatus = 'pending';
+                        delete tasks[taskIndex].completedAt; // Remove completion date
+                        sendNativeNotification("Tarefa Reativada!", `A tarefa "${tasks[taskIndex].title}" foi marcada como 'A Verificar'.`);
+                        break;
+                    case 'pending':
+                        newStatus = 'uncompleted';
+                        delete tasks[taskIndex].completedAt; // Remove completion date
+                        sendNativeNotification("Tarefa Não Concluída!", `A tarefa "${tasks[taskIndex].title}" foi marcada como 'Não Concluída'.`);
+                        break;
+                    default:
+                        newStatus = 'uncompleted'; // Fallback
+                        delete tasks[taskIndex].completedAt;
+                }
+                tasks[taskIndex].status = newStatus;
+                if (completedAt) {
+                    tasks[taskIndex].completedAt = completedAt;
+                }
+                
+                // If the user is logged in and verified, update in Firestore.
+                // onSnapshot will handle UI update.
+                if (currentUser && currentUser.emailVerified) {
+                    await saveTaskToFirestore(tasks[taskIndex]);
+                } else {
+                    // Otherwise, save locally
+                    await saveTasksLocal();
+                    renderTasks();
+                    renderCalendar();
+                }
+            }
+        }
+
+
+        async function deleteTask(id) {
+            // Using the custom modal
+            const confirmed = await showCustomModal('Confirmação', 'Tem certeza que deseja excluir esta tarefa?', true);
+            if (confirmed) {
+                // If the user is logged in and verified, delete from Firestore.
+                // onSnapshot will handle UI update.
+                if (currentUser && currentUser.emailVerified) {
+                    await deleteTaskFromFirestore(id);
+                } else {
+                    // Otherwise, delete locally
+                    tasks = tasks.filter(task => task.id !== id);
+                    await saveTasksLocal();
+                    renderTasks();
+                    renderCalendar();
+                }
+                triggerHapticFeedback();
+                sendNativeNotification("Tarefa Excluída", "Uma tarefa foi removida.");
+            }
+        }
+
+        async function editTask(id) {
+            const task = tasks.find(task => task.id === id);
+            if (!task) return;
+
+            // Fill the form with task data
+            taskTitleInput.value = task.title;
+            taskDescriptionInput.value = task.description;
+            taskDateInput.value = task.date;
+            taskTimeInput.value = task.time;
+
+            // Change add button to "Save Edit"
+            addTaskButton.textContent = 'Salvar Edição';
+            addTaskButton.classList.add('action-button-success');
+            addTaskButton.dataset.editingId = task.id;
+
+            // Scroll to top to show the form
+            document.querySelector('main').scrollTop = 0; // Scroll main
+            showSection('tasks-section'); // Ensure tasks section is visible
+        }
+
+        async function saveEditedTask(id) {
+            const title = taskTitleInput.value.trim();
+            const description = taskDescriptionInput.value.trim();
+            const date = taskDateInput.value;
+            const time = taskTimeInput.value;
+
+            if (!title || !date || !time) {
+                // Using the custom modal
+                showCustomModal('Erro', 'Por favor, preencha o Título, Data e Hora da tarefa.');
+                return;
+            }
+
+            const taskIndex = tasks.findIndex(task => task.id === id);
+            if (taskIndex > -1) {
+                tasks[taskIndex].title = title;
+                tasks[taskIndex].description = description;
+                tasks[taskIndex].date = date;
+                tasks[taskIndex].time = time;
+                
+                // If the user is logged in and verified, update in Firestore.
+                // onSnapshot will handle UI update.
+                if (currentUser && currentUser.emailVerified) {
+                    await saveTaskToFirestore(tasks[taskIndex]);
+                } else {
+                    // Otherwise, save locally
+                    await saveTasksLocal();
+                    renderTasks();
+                    renderCalendar();
+                }
+
+                triggerHapticFeedback();
+                sendNativeNotification("Tarefa Editada", `A tarefa "${tasks[taskIndex].title}" foi atualizada.`);
+
+                // Change button back to "Add Task"
+                addTaskButton.textContent = 'Adicionar Tarefa';
+                addTaskButton.classList.remove('action-button-success');
+                delete addTaskButton.dataset.editingId;
+
+                // Clear the form
+                taskTitleInput.value = '';
+                taskDescriptionInput.value = '';
+                taskDateInput.value = '';
+                taskTimeInput.value = '';
+            }
+        }
+
+        async function autoRemoveCompletedTasks() {
+            if (settings.autoRemoveCompletedTasks) {
+                const now = new Date();
+                const oneDay = 24 * 60 * 60 * 1000; // 24 hours in milliseconds
+
+                let tasksToRemove = [];
+                let tasksToKeep = [];
+
+                tasks.forEach(task => {
+                    if (task.status === 'completed' && task.completedAt) {
+                        const taskCompletedAt = new Date(task.completedAt);
+                        if ((now.getTime() - taskCompletedAt.getTime()) > oneDay) {
+                            tasksToRemove.push(task.id);
+                        } else {
+                            tasksToKeep.push(task);
+                        }
+                    } else {
+                        tasksToKeep.push(task);
+                    }
+                });
+
+                if (tasksToRemove.length > 0) {
+                    // If syncing with cloud, delete from Firestore.
+                    // onSnapshot will update the local list.
+                    if (currentUser && currentUser.emailVerified && isCloudSyncingActive) {
+                        const batch = writeBatch(db);
+                        const userId = currentUser.uid;
+                        const userTasksCollectionRef = collection(db, 'artifacts', appId, 'users', userId, 'userTasks');
+                        tasksToRemove.forEach(taskId => {
+                            batch.delete(doc(userTasksCollectionRef, taskId));
+                        });
+                        try {
+                            await batch.commit();
+                            console.log(`Removed ${tasksToRemove.length} completed tasks from Firestore.`);
+                            sendNativeNotification("Limpeza Automática", `${tasksToRemove.length} tarefas concluídas foram removidas automaticamente.`);
+                        } catch (error) {
+                            console.error("Error batch deleting tasks from Firestore:", error);
+                            updateCloudStatusIndicator('red', 'Error syncing with cloud');
+                        }
+                    } else {
+                        // Otherwise, remove locally and save to localStorage
+                        tasks = tasksToKeep;
+                        await saveTasksLocal();
+                        renderTasks();
+                        renderCalendar();
+                        sendNativeNotification("Limpeza Automática", `${tasksToRemove.length} tarefas concluídas foram removidas automaticamente.`);
+                    }
+                }
+            }
+        }
+
+        // --- Data Export ---
+        function exportData() {
+            const dataToExport = {
+                tasks: tasks,
+                settings: settings,
+                firebaseUser: currentUser ? { uid: currentUser.uid, email: currentUser.email } : null
+            };
+            const filename = `facilita_estudante_dados_${new Date().toISOString().slice(0,10)}`;
+
+            let fileContent;
+            let fileType;
+
+            if (settings.exportFormat === 'json') {
+                fileContent = JSON.stringify(dataToExport, null, 2);
+                fileType = 'application/json';
+            } else if (settings.exportFormat === 'csv') {
+                let csvContent = "Título,Descrição,Data,Hora,Status,Criada Em,Prioridade\n"; // Added Priority
+                tasks.forEach(task => {
+                    csvContent += `"${task.title.replace(/"/g, '""')}",`;
+                    csvContent += `"${task.description ? task.description.replace(/"/g, '""') : ''}",`;
+                    csvContent += `${new Date(task.date + 'T' + task.time).toLocaleDateString('pt-BR')},`;
+                    csvContent += `${task.time},`;
+                    csvContent += `${task.status},`;
+                    csvContent += `${new Date(task.createdAt).toLocaleString('pt-BR')},`;
+                    csvContent += `${task.priority || 'medium'}\n`; // Include priority
+                });
+                fileContent = csvContent;
+                fileType = 'text/csv';
+            } else {
+                // Using the custom modal
+                showCustomModal('Erro', 'Formato de exportação inválido.');
+                return;
+            }
+
+            const blob = new Blob([fileContent], { type: fileType });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `${filename}.${settings.exportFormat}`;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+            // Using the custom modal
+            showCustomModal('Exportação', 'Dados exportados com sucesso!');
+            triggerHapticFeedback();
+        }
+
+        async function clearAllTasks() {
+            // Using the custom modal
+            const confirmed = await showCustomModal('Confirmação', 'Tem certeza que deseja LIMPAR TODAS AS TAREFAS? Se você estiver logado na nuvem, isso também as removerá de lá.', true);
+            if (!confirmed) {
+                return;
+            }
+
+            // If the user is logged in and verified, try to clear from the cloud
+            if (currentUser && currentUser.emailVerified && isCloudSyncingActive) {
+                const userId = currentUser.uid;
+                const userTasksCollectionRef = collection(db, 'artifacts', appId, 'users', userId, 'userTasks');
+                try {
+                    const snapshot = await getDocs(userTasksCollectionRef);
+                    const batch = writeBatch(db);
+                    snapshot.docs.forEach(document => {
+                        batch.delete(document.ref);
+                    });
+                    await batch.commit();
+                    console.log("All tasks have been removed from Firestore.");
+                    showCustomModal('Limpeza Concluída', 'Todas as tarefas (locais e na nuvem) foram removidas.');
+                    sendNativeNotification("Dados Limpos", "Todas as tarefas foram removidas do aplicativo e da nuvem.");
+                } catch (error) {
+                    console.error("Error clearing tasks from cloud:", error);
+                    showCustomModal('Erro', "Erro ao limpar tarefas da nuvem. Os dados locais foram removidos, mas os da nuvem podem persistir.");
+                    updateCloudStatusIndicator('red', 'Error syncing with cloud');
+                }
+            } else {
+                // Otherwise, clear only locally
+                tasks = [];
+                localStorage.removeItem('facilitaEstudanteTasks');
+                showCustomModal('Limpeza Concluída', 'Todas as tarefas locais foram removidas.');
+                sendNativeNotification("Dados Locais Limpos", "Todas as tarefas locais foram removidas.");
+            }
+            
+            // Re-render and update UI, regardless of cloud success,
+            // as onSnapshot will handle the final Firestore state.
+            renderTasks();
+            renderCalendar();
+            updateCloudSyncSectionUI();
+            triggerHapticFeedback();
+        }
+
+        async function clearLocalData() {
+            // Using the custom modal
+            const confirmed = await showCustomModal('Confirmação', 'Tem certeza que deseja limpar APENAS os dados locais? Isso não afetará os dados da nuvem (Firebase).', true);
+            if (confirmed) {
+                tasks = [];
+                localStorage.removeItem('facilitaEstudanteTasks');
+                // Using the custom modal
+                showCustomModal('Limpeza Concluída', 'Dados locais limpos.');
+                renderTasks();
+                renderCalendar();
+                updateCloudSyncSectionUI();
+                triggerHapticFeedback();
+                sendNativeNotification("Dados Locais Limpos", "Seus dados locais foram removidos.");
+            }
+        }
+
+        // --- Privacy Policy ---
+        function showPrivacyPolicy() {
+            const title = "Política de Privacidade do Facilita Estudante";
+            const message = `
+                <p>A sua privacidade é muito importante para nós. Esta política explica como o aplicativo Facilita Estudante coleta, usa e protege suas informações.</p>
+                
+                <h3>Dados Coletados e Uso:</h3>
+                <ul>
+                    <li><b>Tarefas:</b> Coletamos o título, descrição, data, hora e status das tarefas que você adiciona. Usamos esses dados para ajudar você a organizar e gerenciar seus estudos dentro do aplicativo.</li>
+                    <li><b>Dados de Conta:</b> Se você criar uma conta ou fizer login, coletamos seu e-mail e informações de perfil para autenticação e para sincronizar suas tarefas e configurações entre seus dispositivos. Sua senha é sempre criptografada.</li>
+                    <li><b>Configurações:</b> Suas preferências (como tema, fonte) são salvas para personalizar sua experiência.</li>
+                </ul>
+
+                <h3>Como Usamos Seus Dados:</h3>
+                <p>Seus dados são usados para:</p>
+                <ul>
+                    <li>Fazer o aplicativo funcionar (gerenciar tarefas e calendário).</li>
+                    <li>Sincronizar suas informações entre seus dispositivos, se você estiver logado.</li>
+                    <li>Melhorar sua experiência no aplicativo, personalizando-o.</li>
+                    <li>Analisar estatísticas gerais e anônimas de uso (por exemplo, quantas tarefas são criadas no total), sem identificar você individualmente.</li>
+                </ul>
+
+                <h3>Compartilhamento de Dados:</h3>
+                <p>Nós não compartilhamos seus dados pessoais com outras empresas ou pessoas. Suas informações são para seu uso exclusivo e para o funcionamento do Facilita Estudante.</p>
+
+                <h3>Armazenamento de Dados:</h3>
+                <p>Suas informações são salvas localmente no seu aparelho. Se você tiver uma conta, elas também são armazenadas de forma segura em um serviço de banco de dados na nuvem.</p>
+
+                <h3>Segurança:</h3>
+                <p>Tomamos medidas para proteger suas informações, mas lembre-se que nenhum sistema na internet é 100% seguro.</p>
+
+                <h3>Seus Direitos:</h3>
+                <p>Você pode acessar, corrigir, apagar ou exportar seus dados a qualquer momento pelas opções no aplicativo.</p>
+
+                <h3>Mudanças na Política:</h3>
+                <p>Podemos atualizar esta política. Se isso acontecer, avisaremos você publicando a nova versão aqui.</p>
+
+                <p style="font-size: 0.8em; text-align: center; color: var(--secondary-text-color);">Última atualização: 15 de Julho de 2025</p>
+            `;
+            showCustomModal(title, message, false); // Not a confirmation modal, just informative
+        }
+
+        // --- Firebase Authentication Functions ---
+        async function signInWithEmail() {
+            const email = loginEmailInput.value.trim();
+            const password = loginPasswordInput.value.trim();
+
+            if (!email || !password) {
+                showCustomModal("Erro de Login", "Por favor, insira email e senha.");
+                return;
+            }
+
+            // Show loading screen only if it's the very first explicit auth attempt
+            if (!hasUserEverLoggedOrRegistered) {
+                showLoadingScreen();
+            }
+
+            try {
+                const userCredential = await signInWithEmailAndPassword(auth, email, password);
+                // Reload user profile immediately after login to get the latest emailVerified status.
+                await reload(userCredential.user); 
+                const user = auth.currentUser; // Get the *updated* user from the auth object
+
+                if (!user.emailVerified) {
+                    // If email is not verified, log out the user immediately
+                    await signOut(auth);
+                    showCustomModal("Login Bloqueado", `Seu e-mail (${user.email}) ainda não foi verificado. Por favor, <b>verifique sua caixa de entrada</b> (e pasta de spam) para ativar sua conta. Após a ativação, você poderá fazer login.`);
+                    hideLoadingScreen(); // Hide loading screen on error/block
+                    return; // Stop login process
+                }
+                
+                loginEmailInput.value = ''; // Clear fields
+                loginPasswordInput.value = '';
+                localStorage.setItem('hasUserEverLoggedOrRegistered', 'true'); // Mark that user has logged in/registered
+                hasUserEverLoggedOrRegistered = true;
+                // onAuthStateChanged will handle UI update and synchronization
+            } catch (error) {
+                console.error("Error logging in with Email/Password:", error);
+                let errorMessage = `Erro ao fazer login com Email/Senha: ${error.message}`;
+                if (error.code === 'auth/user-not-found' || error.code === 'auth/wrong-password' || error.code === 'auth/invalid-credential') {
+                    errorMessage = 'Email ou senha inválidos. Por favor, tente novamente.';
+                } else if (error.code === 'auth/invalid-email') {
+                    errorMessage = 'Endereço de e-mail inválido.';
+                } else if (error.code === 'auth/too-many-requests') {
+                    errorMessage = 'Muitas tentativas de login. Tente novamente mais tarde.';
+                }
+                showCustomModal("Erro de Login", errorMessage);
+            } finally {
+                hideLoadingScreen(); // Always hide loading screen after auth attempt
+            }
+        }
+
+        async function signUpWithEmail() {
+            const email = loginEmailInput.value.trim();
+            const password = loginPasswordInput.value.trim();
+
+            if (!email || !password) {
+                showCustomModal("Erro de Registro", "Por favor, insira email e senha para registrar.");
+                return;
+            }
+            if (password.length < 8 || !/[a-zA-Z]/.test(password) || !/[0-9]/.test(password)) { // Minimum 8 characters, letters and numbers
+                showCustomModal("Erro de Senha", "A senha deve ter no mínimo 8 caracteres, incluindo letras e números.");
+                return;
+            }
+
+            // Show loading screen only if it's the very first explicit auth attempt
+            if (!hasUserEverLoggedOrRegistered) {
+                showLoadingScreen();
+            }
+
+            try {
+                // Try to create the user first
+                const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+                
+                await sendEmailVerification(userCredential.user);
+                showCustomModal("Verifique seu E-mail", `Um e-mail de ativação foi enviado para <b>${email}</b>. Por favor, verifique sua caixa de entrada (e pasta de spam) para ativar sua conta. Após a ativação, você poderá fazer login.`);
+                loginEmailInput.value = ''; // Clear fields
+                loginPasswordInput.value = '';
+                localStorage.setItem('hasUserEverLoggedOrRegistered', 'true'); // Mark that user has logged in/registered
+                hasUserEverLoggedOrRegistered = true;
+                // Force logout so user needs to verify email and log in
+                await signOut(auth); 
+            } catch (error) {
+                console.error("Error registering with Email/Password:", error);
+                let errorMessage = `Erro ao registrar: ${error.message}`;
+                if (error.code === 'auth/email-already-in-use') {
+                    errorMessage = 'Este e-mail já está em uso. Tente fazer login ou redefinir a senha.';
+                } else if (error.code === 'auth/invalid-email') {
+                    errorMessage = 'Endereço de e-mail inválido.';
+                }
+                showCustomModal("Erro de Registro", errorMessage);
+            } finally {
+                hideLoadingScreen(); // Always hide loading screen after auth attempt
+            }
+        }
+
+        async function signOutUser() {
+            // Using the custom modal
+            const confirmed = await showCustomModal('Confirmação', 'Tem certeza que deseja fazer logout?', true);
+            if (confirmed) {
+                try {
+                    await signOut(auth); // Using the imported signOut function
+                    // onAuthStateChanged will handle UI update
+                } catch (error) {
+                    console.error("Error logging out:", error);
+                    // Using the custom modal
+                    showCustomModal("Erro de Logout", `Erro ao fazer logout: ${error.message}`);
+                }
+            }
+        }
+
+        async function handleForgotPassword() {
+            const email = loginEmailInput.value.trim();
+            if (!email) {
+                showCustomModal("Email Necessário", "Por favor, digite seu e-mail no campo acima para redefinir a senha.");
+                return;
+            }
+
+            const confirmed = await showCustomModal("Redefinir Senha", `Um e-mail de redefinição de senha será enviado para <b>${email}</b>. Deseja continuar?`, true);
+            if (!confirmed) {
+                return;
+            }
+
+            try {
+                await sendPasswordResetEmail(auth, email);
+                showCustomModal("E-mail Enviado", `Um link para redefinir sua senha foi enviado para <b>${email}</b>. Por favor, verifique sua caixa de entrada (e pasta de spam).`);
+            } catch (error) {
+                console.error("Error sending password reset email:", error);
+                let errorMessage = `Erro ao redefinir senha: ${error.message}`;
+                if (error.code === 'auth/user-not-found') {
+                    errorMessage = 'Não encontramos um usuário com este e-mail.';
+                } else if (error.code === 'auth/invalid-email') {
+                    errorMessage = 'Endereço de e-mail inválido.';
+                }
+                showCustomModal("Erro", errorMessage);
+            }
+        }
+
+        // Function to handle email verification or password reset redirection
+        async function handleAuthActionCode() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const mode = urlParams.get('mode');
+            const oobCode = urlParams.get('oobCode');
+
+            if (mode && oobCode) {
+                try {
+                    if (mode === 'verifyEmail') {
+                        await applyActionCode(auth, oobCode);
+                        showCustomModal("Conta Ativada", "Sua conta foi ativada com sucesso! Você já pode fazer login.");
+                    } else if (mode === 'resetPassword') {
+                        // Firebase usually handles the password reset interface automatically
+                        // when navigating to this URL. If you want a custom UI, more code would be needed here.
+                        showCustomModal("Redefinir Senha", "Você será redirecionado para a tela de redefinição de senha. Por favor, siga as instruções.");
+                        // Here you can redirect to a password reset page if not using Firebase's default template
+                        // window.location.href = '/reset-password-page.html?oobCode=' + oobCode;
+                    }
+                    // Clear URL parameters to prevent re-execution
+                    const newUrl = window.location.origin + window.location.pathname;
+                    window.history.replaceState({}, document.title, newUrl);
+                } catch (error) {
+                    console.error("Error processing authentication action:", error);
+                    let errorMessage = "Ocorreu um erro ao processar sua solicitação.";
+                    if (error.code === 'auth/invalid-action-code') {
+                        errorMessage = "O link é inválido ou já expirou.";
+                    } else if (error.code === 'auth/user-disabled') {
+                        errorMessage = "Sua conta foi desativada.";
+                    } else if (error.code === 'auth/already-verified') {
+                        errorMessage = "Seu e-mail já foi verificado.";
+                    }
+                    showCustomModal("Erro", errorMessage);
+                } finally {
+                     // Force a reload so that onAuthStateChanged is triggered
+                     // with the new verification status (if verifyEmail) or login status
+                     // (if user just reset and logged in in the same session)
+                     // Without this, `currentUser.emailVerified` might not update immediately.
+                    window.location.reload(); 
+                }
+            }
+        }
+
+        // Authentication state observer
+        onAuthStateChanged(auth, async (user) => {
+            currentUser = user;
+            isAuthReady = true; // Mark authentication as ready
+
+            // Unsubscribe previous listeners to avoid duplication
+            if (taskUnsubscribe) {
+                taskUnsubscribe(); 
+                taskUnsubscribe = null;
+            }
+            if (settingsUnsubscribe) {
+                settingsUnsubscribe();
+                settingsUnsubscribe = null;
+            }
+            isCloudSyncingActive = false; // Assume sync is inactive until confirmed
+
+            if (currentUser) {
+                // For users who just verified their email,
+                // `user.emailVerified` might not be updated here yet.
+                // Reloading the profile ensures the latest verification status.
+                try {
+                    await reload(currentUser); 
+                    currentUser = auth.currentUser; // Ensure currentUser reflects the reloaded version
+                } catch (reloadError) {
+                    console.warn("Error reloading user profile:", reloadError);
+                }
+
+                console.log("User logged in:", currentUser.email, currentUser.uid, "Email Verified:", currentUser.emailVerified);
+                
+                // Load Firebase settings and then tasks
+                // The settings listener must be configured first so that settings are applied
+                // before tasks are rendered, ensuring the correct theme, etc.
+                if (currentUser.emailVerified) {
+                    const userId = currentUser.uid;
+                    const userSettingsDocRef = doc(db, 'artifacts', appId, 'users', userId, 'settings', 'userSettings');
+                    settingsUnsubscribe = onSnapshot(userSettingsDocRef, 
+                        (docSnapshot) => {
+                            if (docSnapshot.exists()) {
+                                Object.assign(settings, docSnapshot.data());
+                                console.log("Settings updated via onSnapshot:", settings);
+                                localStorage.setItem('facilitaEstudanteSettings', JSON.stringify(settings)); // Save local copy
+                                applySettings();
+                                updateSettingsUI();
+                            } else {
+                                // If settings document doesn't exist in cloud, save local settings there
+                                saveSettings();
+                            }
+                            updateCloudSyncSectionUI(); // Update UI to green
+                        }, 
+                        (error) => {
+                            console.error("Error in settings onSnapshot:", error);
+                            showCustomModal("Erro de Nuvem", `Não foi possível sincronizar configurações: ${error.message}.`);
+                        }
+                    );
+
+                    const userTasksCollectionRef = collection(db, 'artifacts', appId, 'users', userId, 'userTasks');
+                    
+                    // Configure onSnapshot listener for tasks
+                    taskUnsubscribe = onSnapshot(userTasksCollectionRef, 
+                        (snapshot) => {
+                            tasks = snapshot.docs.map(doc => doc.data());
+                            console.log("Tasks updated via onSnapshot:", tasks);
+                            saveTasksLocal(); // Save local copy of what came from the cloud
+                            renderTasks();
+                            renderCalendar();
+                            isCloudSyncingActive = true;
+                            updateCloudSyncSectionUI(); // Update UI to green
+                        }, 
+                        (error) => {
+                            console.error("Error in tasks onSnapshot:", error);
+                            isCloudSyncingActive = false;
+                            showCustomModal("Erro de Nuvem", `Não foi possível sincronizar tarefas: ${error.message}.`);
+                        }
+                    );
+                } else {
+                    // If email is not verified, do not start onSnapshot, load only locally
+                    loadTasksFromLocal(); 
+                    loadSettings(); // Load local settings
+                    isCloudSyncingActive = false;
+                    updateCloudSyncSectionUI();
+                    // Persistent warning if email is not verified and user is not anonymous
+                    if (!currentUser.isAnonymous) {
+                         setTimeout(() => {
+                            showCustomModal("Verificação Necessária", "Seu e-mail não foi verificado. A sincronização de dados com a nuvem está desativada até que você <b>verifique seu e-mail</b>. Por favor, verifique sua caixa de entrada (e pasta de spam) ou clique em 'Registrar com Email' novamente para reenviar o link de verificação.");
+                        }, 1000);
+                    }
+                }
+
+            } else {
+                console.log("User logged out.");
+                loadTasksFromLocal(); // Continue using local tasks
+                loadSettings(); // Load local settings
+                isCloudSyncingActive = false;
+                updateCloudSyncSectionUI();
+                // Try to log in anonymously if no initial token and no user logged in
+                if (!initialAuthToken) {
+                    try {
+                        await signInAnonymously(auth);
+                        console.log("Anonymous login successful.");
+                    } catch (anonymousError) {
+                        console.error("Error in anonymous login:", anonymousError);
+                    }
+                }
+            }
+        });
+
+
+        // --- Event Listeners ---
+
+        // Navigation
+        navItems.forEach(item => {
+            item.addEventListener('click', () => {
+                showSection(item.dataset.section);
+                triggerHapticFeedback();
+            });
+        });
+
+        // Add/Save Task
+        addTaskButton.addEventListener('click', () => {
+            if (addTaskButton.dataset.editingId) {
+                saveEditedTask(addTaskButton.dataset.editingId);
+            } else {
+                addTask();
+            }
+        });
+
+        // Delegate events for task buttons (status, edit, delete)
+        taskList.addEventListener('click', (event) => {
+            const target = event.target;
+            const listItem = target.closest('.task-item');
+            if (!listItem) return;
+
+            const taskId = listItem.dataset.id;
+
+            if (target.closest('.status-button')) {
+                const currentStatus = target.closest('.status-button').dataset.status;
+                toggleTaskStatus(taskId, currentStatus);
+            } else if (target.closest('.edit-task')) {
+                editTask(taskId);
+            } else if (target.closest('.delete-task')) {
+                deleteTask(taskId);
+            }
+        });
+
+        selectedDayTasksList.addEventListener('click', (event) => {
+            const target = event.target;
+            const listItem = target.closest('.task-item');
+            if (!listItem) return;
+
+            const taskId = listItem.dataset.id;
+
+            if (target.closest('.status-button')) {
+                const currentStatus = target.closest('.status-button').dataset.status;
+                toggleTaskStatus(taskId, currentStatus);
+            } else if (target.closest('.edit-task')) {
+                editTask(taskId);
+            } else if (target.closest('.delete-task')) {
+                deleteTask(taskId);
+            }
+        });
+
+        // Calendar
+        prevMonthButton.addEventListener('click', () => {
+            currentMonth.setMonth(currentMonth.getMonth() - 1);
+            renderCalendar();
+            triggerHapticFeedback();
+        });
+
+        nextMonthButton.addEventListener('click', () => {
+            currentMonth.setMonth(currentMonth.getMonth() + 1);
+            renderCalendar();
+            triggerHapticFeedback();
+        });
+
+        // Settings
+        darkModeToggle.addEventListener('change', () => {
+            settings.darkMode = darkModeToggle.checked;
+            saveSettings();
+            triggerHapticFeedback();
+            // The notification permission request is now handled within sendNativeNotification
+        });
+
+        taskNotificationsToggle.addEventListener('change', () => {
+            settings.taskNotifications = taskNotificationsToggle.checked;
+            saveSettings();
+            triggerHapticFeedback();
+            // If notifications are enabled, try to request permission if not already granted
+            if (settings.taskNotifications && 'Notification' in window && Notification.permission === 'default') {
+                Notification.requestPermission();
+            }
+        });
+
+        hapticFeedbackToggle.addEventListener('change', () => {
+            settings.hapticFeedback = hapticFeedbackToggle.checked;
+            saveSettings();
+        });
+
+        confirmDialogsToggle.addEventListener('change', () => { // New event listener
+            settings.confirmDialogs = confirmDialogsToggle.checked;
+            saveSettings();
+            triggerHapticFeedback();
+            showCustomModal('Configuração', `Diálogos de confirmação ${settings.confirmDialogs ? 'ativados' : 'desativados'}.`);
+        });
+
+        // Removed event listener for colorOptions. It's no longer needed since there's only one color.
+        // colorOptions.addEventListener('click', (event) => {
+        //     const selectedBox = event.target.closest('.color-box');
+        //     if (selectedBox && selectedBox.dataset.colorValue) {
+        //         settings.primaryColor = selectedBox.dataset.colorValue;
+        //         saveSettings();
+        //         document.querySelectorAll('.color-box').forEach(box => box.classList.remove('selected'));
+        //         selectedBox.classList.add('selected');
+        //         // customColorInput.value = settings.primaryColor; // Update color picker
+        //         triggerHapticFeedback();
+        //     }
+        // });
+        
+        // Removed customColorInput event listener as custom color picker is removed
+        // customColorInput.addEventListener('input', () => {
+        //     settings.primaryColor = customColorInput.value;
+        //     saveSettings();
+        //     document.querySelectorAll('.color-box').forEach(box => box.classList.remove('selected'));
+        //     document.querySelector('.custom-color-picker').classList.add('selected'); // Ensure custom picker is selected
+        // });
+
+        defaultTaskPriorityOptions.addEventListener('click', (event) => { // New event listener
+            const selectedButton = event.target.closest('.option-button');
+            if (selectedButton && selectedButton.dataset.priority) {
+                settings.defaultTaskPriority = selectedButton.dataset.priority;
+                saveSettings();
+                defaultTaskPriorityOptions.querySelectorAll('.option-button').forEach(btn => btn.classList.remove('selected'));
+                selectedButton.classList.add('selected');
+                triggerHapticFeedback();
+            }
+        });
+
+        fontOptions.addEventListener('click', (event) => {
+            const selectedButton = event.target.closest('.option-button');
+            if (selectedButton && selectedButton.dataset.font) {
+                settings.fontFamily = selectedButton.dataset.font;
+                saveSettings();
+                fontOptions.querySelectorAll('.option-button').forEach(btn => btn.classList.remove('selected'));
+                selectedButton.classList.add('selected');
+                triggerHapticFeedback();
+            }
+        });
+
+        sizeOptions.addEventListener('click', (event) => {
+            const selectedButton = event.target.closest('.option-button');
+            if (selectedButton && selectedButton.dataset.size) {
+                settings.fontSize = selectedButton.dataset.size;
+                saveSettings();
+                sizeOptions.querySelectorAll('.option-button').forEach(btn => btn.classList.remove('selected'));
+                selectedButton.classList.add('selected');
+                triggerHapticFeedback();
+            }
+        });
+
+        reminderOptions.addEventListener('click', (event) => {
+            const selectedButton = event.target.closest('.option-button');
+            if (selectedButton && selectedButton.dataset.reminder) {
+                settings.reminderInterval = selectedButton.dataset.reminder;
+                saveSettings();
+                reminderOptions.querySelectorAll('.option-button').forEach(btn => btn.classList.remove('selected'));
+                selectedButton.classList.add('selected');
+                triggerHapticFeedback();
+            }
+        });
+
+        taskSortByOptions.addEventListener('click', (event) => { // New event listener
+            const selectedButton = event.target.closest('.option-button');
+            if (selectedButton && selectedButton.dataset.sortBy) {
+                settings.taskSortBy = selectedButton.dataset.sortBy;
+                saveSettings();
+                taskSortByOptions.querySelectorAll('.option-button').forEach(btn => btn.classList.remove('selected'));
+                selectedButton.classList.add('selected');
+                renderTasks(); // Re-render tasks with new sorting
+                triggerHapticFeedback();
+            }
+        });
+
+        taskSortOrderOptions.addEventListener('click', (event) => { // New event listener
+            const selectedButton = event.target.closest('.option-button');
+            if (selectedButton && selectedButton.dataset.sortOrder) {
+                settings.taskSortOrder = selectedButton.dataset.sortOrder;
+                saveSettings();
+                taskSortOrderOptions.querySelectorAll('.option-button').forEach(btn => btn.classList.remove('selected'));
+                selectedButton.classList.add('selected');
+                renderTasks(); // Re-render tasks with new sorting
+                triggerHapticFeedback();
+            }
+        });
+
+        calendarStartOptions.addEventListener('click', (event) => {
+            const selectedButton = event.target.closest('.option-button');
+            if (selectedButton && selectedButton.dataset.startDay) {
+                settings.calendarStartDay = selectedButton.dataset.startDay;
+                saveSettings();
+                calendarStartOptions.querySelectorAll('.option-button').forEach(btn => btn.classList.remove('selected'));
+                selectedButton.classList.add('selected');
+                renderCalendar(); // Re-render calendar to apply new week start setting
+                triggerHapticFeedback();
+            }
+        });
+
+        exportOptions.addEventListener('click', (event) => {
+            const selectedButton = event.target.closest('.option-button');
+            if (selectedButton && selectedButton.dataset.exportFormat) {
+                settings.exportFormat = selectedButton.dataset.exportFormat;
+                saveSettings();
+                exportOptions.querySelectorAll('.option-button').forEach(btn => btn.classList.remove('selected'));
+                selectedButton.classList.add('selected');
+                triggerHapticFeedback();
+            }
+        });
+
+        languageOptions.addEventListener('click', (event) => { // NEW: Language option listener
+            const selectedButton = event.target.closest('.option-button');
+            if (selectedButton && selectedButton.dataset.lang) {
+                settings.language = selectedButton.dataset.lang;
+                saveSettings();
+                languageOptions.querySelectorAll('.option-button').forEach(btn => btn.classList.remove('selected'));
+                selectedButton.classList.add('selected');
+                // You might want to reload or update text content based on language here
+                showCustomModal('Idioma', `Idioma alterado para: ${settings.language}`);
+                triggerHapticFeedback();
+            }
+        });
+
+        autoRemoveCompletedTasksToggle.addEventListener('change', () => {
+            settings.autoRemoveCompletedTasks = autoRemoveCompletedTasksToggle.checked;
+            saveSettings();
+            triggerHapticFeedback();
+            autoRemoveCompletedTasks(); // Execute cleanup immediately
+        });
+
+        exportDataButton.addEventListener('click', exportData);
+        clearAllTasksButton.addEventListener('click', clearAllTasks);
+
+        // Account and Cloud Sync section Event Listeners (Firebase)
+        loginEmailButton.addEventListener('click', signInWithEmail);
+        registerEmailButton.addEventListener('click', signUpWithEmail);
+        forgotPasswordButton.addEventListener('click', handleForgotPassword); // New Event Listener
+        logoutButton.addEventListener('click', signOutUser); // Using the unified logout button
+        syncNowButton.addEventListener('click', () => { updateCloudSyncSectionUI(); }); // Now only updates visual status
+        clearLocalDataButton.addEventListener('click', clearLocalData);
+        deleteCloudDataToggle.addEventListener('change', async () => {
+            settings.autoDeleteCloudData = deleteCloudDataToggle.checked;
+            await saveSettings();
+            triggerHapticFeedback();
+            if (settings.autoDeleteCloudData) {
+                // Using the custom modal
+                showCustomModal('Aviso', 'A remoção automática de dados da nuvem (após 24h) está ativada. **Para que isso funcione, um backend que execute a limpeza periodicamente seria necessário em um ambiente de produção.**');
+            } else {
+                // Using the custom modal
+                showCustomModal('Informação', 'A remoção automática de dados da nuvem está desativada.');
+            }
+        });
+
+        // New Event Listener for Privacy Policy link
+        privacyPolicyLink.addEventListener('click', (event) => {
+            event.preventDefault(); // Prevent link from navigating to another page
+            showPrivacyPolicy();
+            triggerHapticFeedback();
+        });
+
+        // Online/Offline event listeners
+        window.addEventListener('online', updateOnlineStatus);
+        window.addEventListener('offline', updateOnlineStatus);
+
+
+        // --- Application Initialization ---
+        document.addEventListener('DOMContentLoaded', async () => {
+            // Attach event listeners for modal buttons once
+            modalConfirmButton.addEventListener('click', handleModalConfirm);
+            modalCancelButton.addEventListener('click', handleModalCancel);
+
+            // Set initial online status
+            updateOnlineStatus();
+
+            // The call to handle authentication actions (verification/reset) should come first
+            // to process verification redirects
+            await handleAuthActionCode();
+
+            // Try to log in with the initial token provided by Canvas (if it exists)
+            if (initialAuthToken) {
+                try {
+                    await signInWithCustomToken(auth, initialAuthToken);
+                    console.log("Login with custom token successful.");
+                } catch (error) {
+                    console.error("Error logging in with custom token:", error);
+                    // If token fails, try anonymous login
+                    try {
+                        await signInAnonymously(auth);
+                        console.log("Anonymous login successful after custom token failure.");
+                    } catch (anonymousError) {
+                        console.error("Error in anonymous login:", anonymousError);
+                    }
+                }
+            } else {
+                 // If no initial token, try anonymous login
+                try {
+                    await signInAnonymously(auth);
+                    console.log("Anonymous login successful.");
+                } catch (error) {
+                    console.error("Error in anonymous login:", error);
+                }
+            }
+
+            // The `onAuthStateChanged` (defined above) will be triggered after initial login
+            // and will handle loading settings and tasks.
+
+            // Render initial UI state while waiting for onAuthStateChanged
+            // This ensures UI doesn't stay blank if there's a slight delay in Firebase Auth.
+            loadSettings(); // Load settings from localStorage
+            loadTasksFromLocal(); // Load tasks from localStorage
+            showSection('tasks-section');
+            autoRemoveCompletedTasks(); // Clear old tasks if option is enabled
+
+            // Hide the initial loading screen after the app is ready
+            hideLoadingScreen();
+        });
+
+        // Optional: To run automatic cleanup of completed tasks periodically
+        // Uncomment and adjust interval as needed.
+        // setInterval(autoRemoveCompletedTasks, 24 * 60 * 60 * 1000); // Every 24 hours
+    </script>
+</body>
+</html>
